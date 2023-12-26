@@ -2,7 +2,6 @@ import { TPAYMENTMODE } from "@/types/types";
 
 export const API_ENDPOINTS = {
   UPLOADIMAGE: "/upload",
-  CREATEPAYMENTVOUCHER: "/procedure/create-voucher",
   CASHIER: "/procedure/cashier",
   VENDORLIST: "/procedure/vendor-list",
   LOCATION: "/procedure/location",
@@ -17,6 +16,8 @@ export const API_ENDPOINTS = {
   COSTCENTERDIVISON: "/procedure/cost-center-division",
   GLCODE: "/procedure/glcode",
   PRODUCTLINE: "/procedure/product-line",
+  CREATEPAYMENTVOUCHER: "/procedure/create-voucher",
+  GETREQUESTEDVOUCHERS: "/procedure/get-voucher",
 };
 
 export const PAYMENT_MODE: TPAYMENTMODE[] = [

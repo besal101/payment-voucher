@@ -239,7 +239,7 @@ export class ProcedureService {
         itemsParams.push("'" + item.description + "'");
         itemsParams.push("'" + item.total + "'");
         itemsParams.push("''");
-        itemsParams.push("'y'");
+        itemsParams.push("'n'");
         itemsParams.push("'" + JSON.stringify(item.attachments) + "'");
         const sp_proc_items = `CALL PP_50002(${itemsParams})`;
         await this.db.executeQuery(sp_proc_items);
@@ -253,8 +253,8 @@ export class ProcedureService {
     }
   }
 
-  async getPaymentVoucher(data: { userID: string }) {
-    const sp_proc = `CALL PP_10031('${data.userID}')`;
+  async getPaymentVoucher(userId: string) {
+    const sp_proc = `CALL PP_10031('${userId}')`;
     try {
       const result = await this.db.executeQuery(sp_proc);
       return {

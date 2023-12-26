@@ -1,12 +1,16 @@
 import { LayoutDashboard, Sheet, ShieldPlus } from "lucide-react";
 import logo from "@/assets/logo.png";
 import { Link } from "react-router-dom";
+import { useUser } from "@/context/UserContext";
 
 type Props = {
   active: string;
 };
 
 const Sidebar: React.FC<Props> = ({ active }: Props) => {
+  const { state } = useUser();
+  const { userId } = state;
+
   return (
     <div className="min-h-screen bg-gray-100 shadow-xl">
       <div className="sidebar min-h-screen w-[3.35rem] overflow-hidden border-r hover:w-56 hover:bg-white hover:shadow-lg">
@@ -18,10 +22,9 @@ const Sidebar: React.FC<Props> = ({ active }: Props) => {
             <ul className="mt-6 tracking-wide">
               <li className="min-w-max">
                 <Link
-                  to="/"
-                  aria-label="dashboard?uSrId=Bishal&LoTp=874220"
+                  to={`/received-request?uSrId=${userId}`}
                   className={`${
-                    active === "/"
+                    active === "/received-request"
                       ? "relative flex items-center space-x-4 bg-gradient-to-r from-rose-500 to-orange-600 px-4 py-3 text-white hover:bg-gray-200"
                       : "bg group flex items-center space-x-4 px-4 py-3 text-gray-600 hover:bg-slate-100"
                   }`}
@@ -34,9 +37,9 @@ const Sidebar: React.FC<Props> = ({ active }: Props) => {
               </li>
               <li className="min-w-max">
                 <Link
-                  to="/request-payment"
+                  to={`/create-payment?uSrId=${userId}`}
                   className={`${
-                    active === "/request-payment?uSrId=Bishal&LoTp=874220"
+                    active === "/create-payment"
                       ? "relative flex items-center space-x-4 bg-gradient-to-r from-rose-500 to-orange-600 px-4 py-3 text-white hover:bg-gray-200"
                       : "bg group flex items-center space-x-4 px-4 py-3 text-gray-600 hover:bg-slate-100"
                   }`}
@@ -47,7 +50,7 @@ const Sidebar: React.FC<Props> = ({ active }: Props) => {
               </li>
               <li className="min-w-max">
                 <Link
-                  to="/view-requested?uSrId=Bishal&LoTp=874220"
+                  to={`/view-requested?uSrId=${userId}`}
                   className={`${
                     active === "/view-requested"
                       ? "relative flex items-center space-x-4 bg-gradient-to-r from-rose-500 to-orange-600 px-4 py-3 text-white hover:bg-gray-200"

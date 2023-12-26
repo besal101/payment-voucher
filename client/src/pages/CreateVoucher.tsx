@@ -12,14 +12,10 @@ const Createvoucher = () => {
   });
 
   return (
-    <div className="pb-8">
-      <div className="border bg-slate-50 border-gray-300/40 rounded-md mt-6">
-        <div className="flex flex-col mb-6 relative mt-1">
-          <FormProvider {...form}>
-            <CreateVC />
-          </FormProvider>
-        </div>
-      </div>
+    <div className="flex flex-col mb-6 relative mt-1">
+      <FormProvider {...form}>
+        <CreateVC />
+      </FormProvider>
     </div>
   );
 };

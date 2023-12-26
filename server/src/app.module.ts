@@ -3,6 +3,7 @@ import { ProcedureModule } from './procedure/procedure.module';
 import { ConfigModule } from '@nestjs/config';
 import { HanaModule } from './hana/hana.module';
 import { UploadModule } from './upload/upload.module';
+import { MailerModule } from './mailer/mailer.module';
 
 @Module({
   imports: [
@@ -10,6 +11,7 @@ import { UploadModule } from './upload/upload.module';
     ProcedureModule,
     HanaModule,
     UploadModule,
+    MailerModule,
   ],
   controllers: [],
   providers: [],

@@ -5,9 +5,10 @@ import {
   HttpCode,
   HttpStatus,
   Post,
+  Query,
 } from '@nestjs/common';
-import { ProcedureService } from './procedure.service';
 import { CreatePaymentVoucherDto } from './dto/paymentVoucher.dto';
+import { ProcedureService } from './procedure.service';
 
 @Controller('procedure')
 export class ProcedureController {
@@ -107,9 +108,9 @@ export class ProcedureController {
     return this.procedure.createPaymentVoucher(data);
   }
 
-  @Post('get-voucher')
+  @Get('get-voucher')
   @HttpCode(HttpStatus.OK)
-  getPaymentVoucher(@Body() data: { userID: string }) {
-    return this.procedure.getPaymentVoucher(data);
+  getPaymentVoucher(@Query('userId') userId: string) {
+    return this.procedure.getPaymentVoucher(userId);
   }
 }

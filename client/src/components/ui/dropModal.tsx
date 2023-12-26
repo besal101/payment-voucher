@@ -65,7 +65,6 @@ const DropModal = () => {
         });
       }
     } catch (error) {
-      console.log(error);
       toast({
         variant: "destructive",
         title: "Uh oh! Something went wrong.",
