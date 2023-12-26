@@ -1,28 +1,25 @@
-import { lazy, Suspense } from "react";
-
-import Layout from "../Layout";
-import Login from "@/pages/login";
 import { PageLoader } from "@/components/Shared";
-
-const PageRouter = lazy(() => import("./PageRouter"));
+import Homepage from "@/pages/Homepage";
+import ReceivedRequest from "@/pages/ReceivedRequest";
+import { lazy, Suspense } from "react";
+import { Route, Routes } from "react-router-dom";
+import ProtectedRoute from "./ProtectedRoute";
+const CreateVoucher = lazy(() => import("@/pages/CreateVoucher"));
+const ListVoucher = lazy(() => import("@/pages/ListVoucher"));
+const Login = lazy(() => import("@/pages/login"));
 
 export default function AppRouter() {
-  //   const { isLoggedIn } = useSelector(selectAuth);
-  const isLoggedIn = true;
-
-  if (!isLoggedIn)
-    return (
-      <Suspense fallback={<PageLoader />}>
-        <Login />
-      </Suspense>
-    );
-  else {
-    return (
-      <Suspense fallback={<PageLoader />}>
-        <Layout>
-          <PageRouter />
-        </Layout>
-      </Suspense>
-    );
-  }
+  return (
+    <Suspense fallback={<PageLoader />}>
+      <Routes>
+        <Route path="/" element={<Homepage />} />
+        <Route element={<ProtectedRoute />}>
+          <Route path="received-request" element={<ReceivedRequest />} />
+          <Route path="create-payment" element={<CreateVoucher />} />
+          <Route path="view-requested" element={<ListVoucher />} />
+        </Route>
+        <Route path="login" element={<Login />} />
+      </Routes>
+    </Suspense>
+  );
 }

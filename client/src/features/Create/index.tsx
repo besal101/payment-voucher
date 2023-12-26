@@ -160,11 +160,11 @@ const CreateVC = () => {
               </div>
             </div>
           </div>
-          <div className="fixed bottom-5 left-20 right-7 h-16 shadow-lg">
+          <div className="fixed bottom-5 left-20 right-7 h-14 shadow-lg bg-slate-300 rounded-sm">
             <div className="flex flex-row justify-end items-center">
-              <div className="flex justify-between gap-3 mt-4 mr-4">
+              <div className="flex justify-between gap-3 mt-3 mr-4">
                 <Button
-                  className=""
+                  className="shadow-md"
                   variant={"default"}
                   size={"sm"}
                   type="submit"
@@ -173,7 +173,7 @@ const CreateVC = () => {
                   Submit
                 </Button>
                 <Button
-                  className=""
+                  className="shadow-md"
                   variant={"secondary"}
                   size={"sm"}
                   type="button"

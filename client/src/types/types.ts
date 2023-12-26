@@ -89,3 +89,57 @@ export type GLCODEResponse = {
 export type ProductLineResponse = {
   result: ProductLine[];
 };
+
+export type ViewRequestedT = {
+  REQNO: number;
+  REQDATE: string;
+  REQCASHIERCODE: string;
+  REQCASHIERNAME: string;
+  REQLOCCODE: string;
+  REQLOCNAME: string;
+  REQMETHODCODE: string;
+  REQMETHODNAME: string;
+  REQTYPECODE: string;
+  REQTYPENAME: string;
+  REQMODECODE: string;
+  REQMODENAME: string;
+  REQCURRCODE: string;
+  REQBPCODE: string;
+  REQEMPCODE: number;
+  REQPONO: number;
+  REQAPINVNO: number;
+  REQPAYTOOTHERS: string;
+  REQVATPERC: string;
+  REQUSERID: string;
+  REQUSERLOG: string;
+  REQCANCELED: string;
+  REQREMARKS: string;
+  REQATTACH: string;
+  "REQNO:2": number;
+  CC_DEPT: string;
+  CC_DIV: string;
+  CC_PRODLINE: string;
+  GLCODE: string;
+  GLNAME: string;
+  REQDESC: string;
+  REQAMOUNT: number;
+  "REQREMARKS:2": string;
+  REQACTIVE: string;
+  "REQATTACH:2": string;
+};
+
+export type ViewRequestedResponse = {
+  result: ViewRequestedT[];
+};
+
+export type VTDATA = {
+  REQNO: number;
+  REQDATE: string;
+  REQLOCNAME: string;
+  REQTYPENAME: string;
+  REQCURRCODE: string;
+  REQVATPERC: string;
+  REQCANCELED: string;
+  REQAMOUNT: number;
+  REQBPCODE: string;
+};

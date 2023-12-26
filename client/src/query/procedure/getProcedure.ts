@@ -13,6 +13,7 @@ import {
   ProductLineResponse,
   VATRESPONSE,
   VENDORLISTRESPONSE,
+  ViewRequestedResponse,
 } from "@/types/types";
 import { UseQueryResult, useQuery } from "@tanstack/react-query";
 import { QUERYKEYS } from "../constants";
@@ -181,17 +182,37 @@ const useGetProductLineQuery = (): UseQueryResult<
   });
 };
 
+const fetchAllRequestedVoucher = async (
+  userId: string
+): Promise<ViewRequestedResponse> => {
+  const { data } = await http.get(
+    `${API_ENDPOINTS.GETREQUESTEDVOUCHERS}?userId=${userId}`
+  );
+
+  return data;
+};
+
+const useGetRequestedVoucherQuery = (
+  userId: string
+): UseQueryResult<ViewRequestedResponse, Error> => {
+  return useQuery<ViewRequestedResponse, Error>({
+    queryKey: [QUERYKEYS.GETREQUESTEDVOUCHERS, userId],
+    queryFn: () => fetchAllRequestedVoucher(userId),
+  });
+};
+
 export {
+  useGetCostCenterDepartmentQuery,
+  useGetCostCenterDivisionQuery,
+  useGetCurrencyQuery,
   useGetFetchCashierQuery,
-  useGetVendorListQuery,
+  useGetFetchEmployeeQuery,
+  useGetGLCodeQuery,
   useGetLocationQuery,
   useGetPaymentMethodQuery,
   useGetPaymentTypeQuery,
-  useGetVatPercentQuery,
-  useGetCurrencyQuery,
-  useGetFetchEmployeeQuery,
-  useGetCostCenterDepartmentQuery,
-  useGetCostCenterDivisionQuery,
-  useGetGLCodeQuery,
   useGetProductLineQuery,
+  useGetRequestedVoucherQuery,
+  useGetVatPercentQuery,
+  useGetVendorListQuery,
 };
