@@ -1,7 +1,12 @@
 const d = new Date();
+const options: Intl.DateTimeFormatOptions = {
+  month: "short",
+  day: "numeric",
+  year: "numeric",
+};
 
 export const FORM_DEFAULT_VALUES = {
-  date: `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`,
+  date: d.toLocaleDateString("en-US", options),
   cashier_code: "",
   cashier_name: "",
   location_code: "",
@@ -14,21 +19,28 @@ export const FORM_DEFAULT_VALUES = {
   payment_mode_name: "",
   currency: "AED",
   vendor_code: "",
+  vendor_name: "",
   user_id: "",
-  purchase_order: "",
+  purchase_order: 0,
+  ap_invoice: 0,
   pay_to: "employee",
-  ap_invoice: "",
   pay_to_others: "",
+  vat_code: "",
   vat_percent: 0,
-  employee_code: "",
+  employee_code: 0,
+  employee_name: "",
   status: "y",
   remarks: "",
   attachments: "",
+  total_amount: 0,
   items: [
     {
-      division: "",
-      department: "",
-      product_line: "",
+      division_code: "",
+      division_name: "",
+      department_code: "",
+      department_name: "",
+      product_line_code: "",
+      product_line_name: "",
       gl_code: "",
       gl_name: "",
       description: "",
@@ -37,3 +49,18 @@ export const FORM_DEFAULT_VALUES = {
     },
   ],
 };
+
+export const statuses = [
+  {
+    value: "Pending",
+    label: "Pending",
+  },
+  {
+    value: "Approved",
+    label: "Approved",
+  },
+  {
+    value: "Rejected",
+    label: "Rejected",
+  },
+];

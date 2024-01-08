@@ -17,7 +17,7 @@ import { useGetVendorListQuery } from "@/query/procedure/getProcedure";
 import { VENDORLIST } from "@/types/types";
 
 const VendorC = () => {
-  const { control } = useFormContext();
+  const { control, setValue } = useFormContext();
   const { data: VendorList } = useGetVendorListQuery();
   return (
     <FormField
@@ -29,7 +29,15 @@ const VendorC = () => {
             Vendor Code
           </FormLabel>
           <FormControl>
-            <Select onValueChange={field.onChange} defaultValue={field.value}>
+            <Select
+              onValueChange={(value) => {
+                const Vendorname = VendorList?.result?.find(
+                  (item) => item.CardCode.toString() === value
+                );
+                field.onChange(value);
+                setValue("vendor_name", Vendorname?.VENDOR);
+              }}
+            >
               <FormControl>
                 <SelectTrigger>
                   <SelectValue placeholder="Select Vendor" />

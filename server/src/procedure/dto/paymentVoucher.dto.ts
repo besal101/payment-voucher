@@ -2,6 +2,7 @@ import { Type } from 'class-transformer';
 import {
   ArrayNotEmpty,
   IsArray,
+  IsInt,
   IsNotEmpty,
   IsNumber,
   IsOptional,
@@ -18,15 +19,27 @@ export enum Status {
 class ItemDto {
   @IsNotEmpty()
   @IsString()
-  department: string;
+  division_code: string;
 
   @IsNotEmpty()
   @IsString()
-  division: string;
+  division_name: string;
 
   @IsNotEmpty()
   @IsString()
-  product_line: string;
+  department_code: string;
+
+  @IsNotEmpty()
+  @IsString()
+  department_name: string;
+
+  @IsNotEmpty()
+  @IsString()
+  product_line_code: string;
+
+  @IsNotEmpty()
+  @IsString()
+  product_line_name: string;
 
   @IsNotEmpty()
   @IsString()
@@ -44,8 +57,10 @@ class ItemDto {
   @IsNumber()
   total: number;
 
+  @IsOptional()
   remark: string;
 
+  @IsOptional()
   active: string;
 
   @IsArray()
@@ -104,16 +119,23 @@ export class CreatePaymentVoucherDto {
   @IsNotEmpty()
   vendor_code: number;
 
+  @IsOptional()
   @IsString()
-  employee_code: string;
+  vendor_name: string;
 
-  @IsNotEmpty()
-  @IsString()
-  purchase_order: string;
+  @IsNumber()
+  @IsOptional()
+  employee_code: number;
 
-  @IsNotEmpty()
   @IsString()
-  ap_invoice: string;
+  @IsOptional()
+  employee_name: string;
+
+  @IsNumber()
+  purchase_order: number;
+
+  @IsNumber()
+  ap_invoice: number;
 
   @IsString()
   pay_to_others: string;
@@ -122,11 +144,11 @@ export class CreatePaymentVoucherDto {
   vat_percent: string;
 
   @IsNotEmpty()
-  @IsString()
-  user_id: string;
+  vat_code: string;
 
   @IsNotEmpty()
-  status: boolean;
+  @IsString()
+  user_id: string;
 
   @IsString()
   remarks: string;
@@ -134,6 +156,14 @@ export class CreatePaymentVoucherDto {
   @IsOptional()
   @IsString()
   attachments: string;
+
+  @IsOptional()
+  @IsString()
+  username: string;
+
+  @IsOptional()
+  @IsInt()
+  total_amount: number;
 
   @IsNotEmpty()
   @ArrayNotEmpty()

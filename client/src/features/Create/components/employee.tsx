@@ -16,7 +16,7 @@ import { useGetFetchEmployeeQuery } from "@/query/procedure/getProcedure";
 import { useFormContext } from "react-hook-form";
 
 const EmployeeC = () => {
-  const { control } = useFormContext();
+  const { control, setValue } = useFormContext();
   const { data: Employee } = useGetFetchEmployeeQuery();
 
   return (
@@ -28,7 +28,16 @@ const EmployeeC = () => {
           <FormLabel htmlFor="employee_code" className="mr-8">
             Employee
           </FormLabel>
-          <Select onValueChange={field.onChange} defaultValue={field.value}>
+          <Select
+            onValueChange={(value) => {
+              const selectedEmployee = Employee?.result?.find(
+                (item) => item.EMP_ID.toString() === value
+              );
+              field.onChange(value);
+              setValue("employee_name", selectedEmployee?.EMP_FULLNAME);
+            }}
+            defaultValue={field.value}
+          >
             <FormControl>
               <SelectTrigger>
                 <SelectValue placeholder="Select Employee name" />

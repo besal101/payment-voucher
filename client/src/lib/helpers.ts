@@ -72,23 +72,27 @@ const groupArray = (arr: ViewRequestedT[]) => {
         REQTYPENAME,
         REQCURRCODE,
         REQVATPERC,
-        REQCANCELED,
+        RESTATUS,
         REQAMOUNT,
         REQBPCODE,
+        REQUSERID,
+        REQUSERNAME,
       } = obj;
       const key = REQNO;
 
       if (!acc[key]) {
         acc[key] = {
+          REQUSERID,
           REQNO,
           REQDATE,
           REQLOCNAME,
           REQTYPENAME,
           REQCURRCODE,
-          REQCANCELED,
+          RESTATUS,
           REQVATPERC,
           REQAMOUNT,
           REQBPCODE,
+          REQUSERNAME,
         };
       } else {
         acc[key].REQAMOUNT += REQAMOUNT;
@@ -125,6 +129,56 @@ const filterRequired = (
   return data.filter((key) => key.REQNO === reqno);
 };
 
+const isWithinRange = (
+  row: { original: { REQDATE: string } },
+  columnId: unknown,
+  value: string[]
+) => {
+  const dateStr = row?.original.REQDATE as string;
+  const [start, end] = value;
+
+  const date = new Date(`${dateStr}T00:00:00`);
+
+  const startUTC = start ? new Date(`${start}T00:00:00Z`) : null;
+  const endUTC = end ? new Date(`${end}T23:59:59Z`) : null;
+
+  if (!date) {
+    return false;
+  } else if (startUTC && endUTC) {
+    const isWithinRange =
+      date.getTime() >= startUTC.getTime() &&
+      date.getTime() <= endUTC.getTime();
+    return isWithinRange;
+  } else {
+    return true;
+  }
+};
+
+const countFiles = (jsonString: string): number => {
+  try {
+    const filenames: string[] = JSON.parse(jsonString);
+    return filenames.length;
+  } catch (error) {
+    console.error("Error parsing JSON:", error);
+    return 0;
+  }
+};
+
+const handleDownload = (jsonString: string) => {
+  try {
+    const filenames: string[] = JSON.parse(jsonString);
+    filenames.forEach((fileName) => {
+      const fileUrl = `${
+        import.meta.env.VITE_PUBLIC_BACKEND
+      }/uploads/${fileName}`;
+      window.open(fileUrl, "_blank");
+    });
+  } catch (error) {
+    console.error("Unable to view the attachment", error);
+    return 0;
+  }
+};
+
 export {
   formatNumberWithCommas,
   mergeItemsAttachments,
@@ -134,4 +188,7 @@ export {
   calculateNetAmount,
   calculateTotalAmountfromALl,
   getCurrencyName,
+  isWithinRange,
+  countFiles,
+  handleDownload,
 };

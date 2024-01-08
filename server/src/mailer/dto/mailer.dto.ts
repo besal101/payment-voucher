@@ -22,3 +22,21 @@ export class CreateMailerDto {
   @IsUrl()
   navigateTo: string;
 }
+
+export class SuccessMailerDto {
+  @ApiProperty()
+  @IsEmail()
+  email: string;
+
+  @ApiProperty()
+  @IsString()
+  name: string;
+
+  @ApiProperty()
+  @IsString()
+  totalAmount: string;
+
+  @ApiProperty()
+  @IsUrl()
+  navigateTo: string;
+}

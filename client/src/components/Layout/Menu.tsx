@@ -17,10 +17,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useUser } from "@/context/UserContext";
 
 import { Link } from "react-router-dom";
 
 const Menu = () => {
+  const { state } = useUser();
+  // Now you can access properties from the state
+  const { EMP_FULLNAME } = state;
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -29,7 +33,7 @@ const Menu = () => {
           className=" hover:text-slate-200 text-sm pr-4 mr-6 mt-1.5"
         >
           <CircleUserRound className="mr-2 " size={22} />
-          Bishal
+          Hello {EMP_FULLNAME}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-48 mr-10">

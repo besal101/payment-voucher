@@ -21,11 +21,11 @@ const Layout = (props: Props) => {
             <div className="flex flex-row justify-between">
               <span className="text-white font-semibold text-base font-poppins px-8 pt-4">
                 {location.pathname === "/received-request" &&
-                  "You have received the following requests to be approved."}
+                  "You have received the following requests to be approved"}
                 {location.pathname === "/create-payment" &&
-                  "Payment Request Voucher."}
+                  "Payment Request Voucher"}
                 {location.pathname === "/view-requested" &&
-                  "You have requested the followings payments to be approved."}
+                  "You have requested the followings payments to be approved"}
               </span>
               <Menu />
             </div>

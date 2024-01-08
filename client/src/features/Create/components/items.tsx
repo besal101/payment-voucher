@@ -67,12 +67,21 @@ const SingleItem = ({ name, index, fields, removeField }: SingleItemProps) => {
         <TableCell className="border-[1.3px] border-slate-300">
           <FormField
             control={control}
-            name={`${name}[${index}].division`}
+            name={`${name}[${index}].division_code`}
             render={({ field }) => (
               <FormItem>
                 <FormControl>
                   <Select
-                    onValueChange={field.onChange}
+                    onValueChange={(value) => {
+                      const selectedName = CostCenterDivision?.result?.find(
+                        (item) => item.PrcCode.toString() === value
+                      );
+                      field.onChange(value);
+                      setValue(
+                        `${name}[${index}].division_name`,
+                        selectedName?.PrcName
+                      );
+                    }}
                     defaultValue={field.value}
                   >
                     <FormControl>
@@ -99,12 +108,21 @@ const SingleItem = ({ name, index, fields, removeField }: SingleItemProps) => {
         <TableCell className="border-[1.3px] border-slate-300">
           <FormField
             control={control}
-            name={`${name}[${index}].department`}
+            name={`${name}[${index}].department_code`}
             render={({ field }) => (
               <FormItem>
                 <FormControl>
                   <Select
-                    onValueChange={field.onChange}
+                    onValueChange={(value) => {
+                      const selectedName = CostCenterDepartment?.result?.find(
+                        (item) => item.DeptCode.toString() === value
+                      );
+                      field.onChange(value);
+                      setValue(
+                        `${name}[${index}].department_name`,
+                        selectedName?.DeptName
+                      );
+                    }}
                     defaultValue={field.value}
                   >
                     <FormControl>
@@ -131,12 +149,21 @@ const SingleItem = ({ name, index, fields, removeField }: SingleItemProps) => {
         <TableCell className="border-[1.3px] border-slate-300 pl-2 pr-2">
           <FormField
             control={control}
-            name={`${name}[${index}].product_line`}
+            name={`${name}[${index}].product_line_code`}
             render={({ field }) => (
               <FormItem>
                 <FormControl>
                   <Select
-                    onValueChange={field.onChange}
+                    onValueChange={(value) => {
+                      const selectedName = ProductLine?.result?.find(
+                        (item) => item.ProdLineCode.toString() === value
+                      );
+                      field.onChange(value);
+                      setValue(
+                        `${name}[${index}].product_line_name`,
+                        selectedName?.ProdLineName
+                      );
+                    }}
                     defaultValue={field.value}
                   >
                     <FormControl>

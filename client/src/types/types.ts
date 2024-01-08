@@ -26,13 +26,14 @@ export type PurchaseOrderT = { DocCur: string; DocDate: string; PONO: string };
 export type PaymentMethod = { PayMethodCode: string; PayMethodName: string };
 export type ApInvoiceT = { INVNO: string; DocDate: string; DocCur: string };
 export type PaymentType = { PayTypeCode: string; PayTypeName: string };
-export type VAT = { Rate: number };
+export type VAT = { Code: string; Name: string };
 export type Currency = { CurrCode: string; CurrName: string };
 export type Employee = { EMP_ID: number; EMP_FULLNAME: string };
 export type CostCenterDepartment = { DeptCode: string; DeptName: string };
 export type CostCenterDivision = { PrcCode: string; PrcName: string };
 export type GLCODE = { ACCODE: string; ACCNAME: string };
 export type ProductLine = { ProdLineCode: string; ProdLineName: string };
+export type VATRATET = { Rate: string };
 
 export type CashierResponse = {
   result: Cashier[];
@@ -64,6 +65,10 @@ export type PaymentTypeResponse = {
 
 export type VATRESPONSE = {
   result: VAT[];
+};
+
+export type VATRATERESPONSE = {
+  result: VATRATET[];
 };
 
 export type CurrencyResponse = {
@@ -107,22 +112,28 @@ export type ViewRequestedT = {
   REQBPCODE: string;
   REQEMPCODE: number;
   REQPONO: number;
+  REQEMPNAME: string;
   REQAPINVNO: number;
   REQPAYTOOTHERS: string;
   REQVATPERC: string;
   REQUSERID: string;
+  REQUSERNAME: string;
   REQUSERLOG: string;
-  REQCANCELED: string;
+  RESTATUS: string;
   REQREMARKS: string;
   REQATTACH: string;
   "REQNO:2": number;
   CC_DEPT: string;
+  CC_DEPTNAM: string;
   CC_DIV: string;
+  CC_DIVNAM: string;
   CC_PRODLINE: string;
+  CC_PRODLINENAM: string;
   GLCODE: string;
   GLNAME: string;
   REQDESC: string;
   REQAMOUNT: number;
+  APPROVEDUSERNAME: string;
   "REQREMARKS:2": string;
   REQACTIVE: string;
   "REQATTACH:2": string;
@@ -139,7 +150,34 @@ export type VTDATA = {
   REQTYPENAME: string;
   REQCURRCODE: string;
   REQVATPERC: string;
-  REQCANCELED: string;
+  RESTATUS: string;
   REQAMOUNT: number;
   REQBPCODE: string;
+  REQUSERID: string;
+  REQUSERNAME: string;
+};
+
+export type APPROVERT = {
+  USERID: string;
+  USERNAME: string;
+  APPROVALSTAGE: number;
+  USEREMAIL: string;
+  USERMOBILE: string;
+};
+
+export type APPROVERTRESPONSE = {
+  result: APPROVERT[];
+};
+
+export type APPROVALHISTORY = {
+  REQNO: string;
+  APPROVELUSERNAME: string;
+  APPROVERSTAGE: string;
+  APPROVERSTATUS: string;
+  APPROVERLOG: string;
+  APPROVEREMARKS: string;
+};
+
+export type APPROVALHISTORYRESPONSE = {
+  result: APPROVALHISTORY[];
 };

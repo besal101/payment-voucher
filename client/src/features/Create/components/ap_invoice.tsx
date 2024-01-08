@@ -31,6 +31,7 @@ const Apinvoice = () => {
     mutationFn: async (vendorCode: string): Promise<ApInvoiceResponse> => {
       const response = await http.post(API_ENDPOINTS.APINVOICE, {
         vendorCode,
+        purchaseOrder: purchaseOrder ? +purchaseOrder : 0,
       });
       setAPInvoice(response.data);
       return response.data;
@@ -50,12 +51,18 @@ const Apinvoice = () => {
     defaultValue: "",
   });
 
+  const purchaseOrder = useWatch({
+    control,
+    name: "purchase_order",
+    defaultValue: 0,
+  });
+
   useEffect(() => {
     if (vendorCode !== "") {
       getAPInvoice(vendorCode);
     }
     return;
-  }, [getAPInvoice, vendorCode]);
+  }, [getAPInvoice, vendorCode, purchaseOrder]);
 
   return (
     <FormField

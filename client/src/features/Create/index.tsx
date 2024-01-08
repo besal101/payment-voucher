@@ -29,10 +29,14 @@ import Remarks from "./components/remarks";
 import Calculations from "./components/calculations";
 const DropModal = lazy(() => import("@/components/ui/dropModal"));
 import { useNavigate } from "react-router-dom";
+import { useUser } from "@/context/UserContext";
 
 const CreateVC = () => {
-  const { handleSubmit, reset, control } = useFormContext<PaymentFormType>();
+  const { handleSubmit, reset, control, formState } =
+    useFormContext<PaymentFormType>();
   const navigate = useNavigate();
+
+  const { state } = useUser();
 
   const [searchParams] = useSearchParams();
 
@@ -43,6 +47,8 @@ const CreateVC = () => {
   const handleButtonClick = (modalKey: string) => {
     openModal(modalKey);
   };
+
+  console.log(formState.errors);
 
   const payReceiver = useWatch({
     control,
@@ -60,7 +66,7 @@ const CreateVC = () => {
     },
     onSuccess: () => {
       reset();
-      navigate("/view-requested");
+      navigate(`/payment-request?uSrId=${state.USER_ID}`);
       toast({
         title: "Success !!",
         description:
@@ -76,12 +82,18 @@ const CreateVC = () => {
     },
   });
 
+  const handleClose = () => {
+    navigate(`/payment-request?uSrId=${state.USER_ID}`);
+  };
+
   function onSubmit(data: PaymentFormType) {
     data.attachments = payload.attachments
       ? JSON.stringify(payload.attachments)
       : undefined;
     data.user_id = searchParams.get("uSrId") as string;
-    data.status = "y";
+    data.employee_code =
+      data.employee_code === undefined ? 0 : data.employee_code;
+    data.username = state.EMP_FULLNAME;
     const updatedData = mergeItemsAttachments(data, payload);
     createPaymentVoucher(updatedData);
   }
@@ -180,7 +192,17 @@ const CreateVC = () => {
                   disabled={isPending}
                   onClick={() => reset()}
                 >
-                  Cancel
+                  Reset
+                </Button>
+                <Button
+                  className="shadow-md bg-purple-800"
+                  variant={"default"}
+                  size={"sm"}
+                  type="button"
+                  disabled={isPending}
+                  onClick={handleClose}
+                >
+                  Close
                 </Button>
               </div>
             </div>

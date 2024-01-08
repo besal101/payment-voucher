@@ -23,7 +23,7 @@ const Remarks = () => {
             <Textarea
               id="remarks"
               {...field}
-              className="h-10 w-[180px] text-[10px] px-1 py-1 border border-slate-400 font-light rounded-sm"
+              className="h-14 w-[240px] text-[10px] px-1 py-1 border border-slate-400 font-light rounded-sm"
             />
           </FormControl>
           <FormMessage />

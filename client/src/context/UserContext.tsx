@@ -1,11 +1,15 @@
 // UserContext.tsx
 import React, { createContext, useContext, ReactNode, useReducer } from "react";
 
-type UserState = {
-  userId: string;
+export type UserState = {
+  USER_ID: string;
+  EMP_FULLNAME: string;
+  APPROVALS: number;
+  USER_EMAIL: string;
+  USER_MOBILE1: string;
 };
 
-type UserAction = { type: "SET_USER_ID"; payload: string };
+type UserAction = { type: "SET_USER"; payload: UserState };
 
 type UserContextType = {
   state: UserState;
@@ -20,15 +24,28 @@ type UserProviderProps = {
 
 const userReducer = (state: UserState, action: UserAction): UserState => {
   switch (action.type) {
-    case "SET_USER_ID":
-      return { ...state, userId: action.payload };
+    case "SET_USER":
+      return {
+        ...state,
+        USER_ID: action.payload.USER_ID,
+        EMP_FULLNAME: action.payload.EMP_FULLNAME,
+        APPROVALS: action.payload.APPROVALS,
+        USER_EMAIL: action.payload.USER_EMAIL,
+        USER_MOBILE1: action.payload.USER_MOBILE1,
+      };
     default:
       return state;
   }
 };
 
 export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
-  const [state, dispatch] = useReducer(userReducer, { userId: "" });
+  const [state, dispatch] = useReducer(userReducer, {
+    USER_ID: "",
+    EMP_FULLNAME: "",
+    APPROVALS: 0,
+    USER_EMAIL: "",
+    USER_MOBILE1: "",
+  });
 
   return (
     <UserContext.Provider value={{ state, dispatch }}>

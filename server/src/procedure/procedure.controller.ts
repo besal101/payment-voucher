@@ -8,6 +8,20 @@ import {
   Query,
 } from '@nestjs/common';
 import { CreatePaymentVoucherDto } from './dto/paymentVoucher.dto';
+import {
+  GetApInvoice,
+  GetApprovalHistory,
+  GetApproverDto,
+  GetNextLevelApproverDto,
+  GetPaymentDisbursement,
+  GetPurchaseOrder,
+  GetSingleVoucher,
+  GetVatPercent,
+  HandleVoucherApprove,
+  HandleVoucherReject,
+  RequesterInfoDto,
+  VerifyApproverExists,
+} from './dto/requesterInfo.dto';
 import { ProcedureService } from './procedure.service';
 
 @Controller('procedure')
@@ -74,13 +88,13 @@ export class ProcedureController {
 
   @Post('purchase-order')
   @HttpCode(HttpStatus.OK)
-  getPurchaseOrder(@Body() data: { vendorCode: string }) {
+  getPurchaseOrder(@Body() data: GetPurchaseOrder) {
     return this.procedure.getPurchaseOrder(data);
   }
 
   @Post('ap-invoice')
   @HttpCode(HttpStatus.OK)
-  getApInvoice(@Body() data: { vendorCode: string }) {
+  getApInvoice(@Body() data: GetApInvoice) {
     return this.procedure.getApInvoice(data);
   }
 
@@ -88,6 +102,12 @@ export class ProcedureController {
   @HttpCode(HttpStatus.OK)
   getVAT() {
     return this.procedure.getVAT();
+  }
+
+  @Post('get-vat-percent')
+  @HttpCode(HttpStatus.OK)
+  getVatPercentage(@Body() data: GetVatPercent) {
+    return this.procedure.getVatPercentage(data);
   }
 
   @Get('employee')
@@ -112,5 +132,81 @@ export class ProcedureController {
   @HttpCode(HttpStatus.OK)
   getPaymentVoucher(@Query('userId') userId: string) {
     return this.procedure.getPaymentVoucher(userId);
+  }
+
+  /**
+   *  Verify if the user have approver
+   * if not then redirect from the front end
+   */
+  @Post('check-approver')
+  @HttpCode(HttpStatus.OK)
+  verifyApproverExist(@Body() data: VerifyApproverExists) {
+    return this.procedure.verifyApproverExist(data);
+  }
+
+  /**
+   *
+   * Get the current approval stage of the userInfo.
+   * If not approval is found than Redirect.
+   *
+   */
+
+  @Post('requester-info')
+  @HttpCode(HttpStatus.OK)
+  getRequesterInfo(@Body() data: RequesterInfoDto) {
+    return this.procedure.getRequesterInfo(data);
+  }
+
+  /**
+   *
+   * Get the current approval stage of the userInfo.
+   * If not approval is found than Redirect.
+   *
+   */
+
+  @Post('get-approver')
+  @HttpCode(HttpStatus.OK)
+  getApprovers(@Body() data: GetApproverDto) {
+    return this.procedure.getApprovers(data);
+  }
+
+  /**
+   * Get single Transaction using REQNO and UserID as Parameter
+   *
+   */
+  @Post('get-single-voucher')
+  @HttpCode(HttpStatus.OK)
+  getSingleVoucher(@Body() data: GetSingleVoucher) {
+    return this.procedure.getSingleVoucher(data);
+  }
+
+  @Post('get-next-level-approver')
+  @HttpCode(HttpStatus.OK)
+  getNextApprovers(@Body() data: GetNextLevelApproverDto) {
+    return this.procedure.getNextApprovers(data);
+  }
+
+  @Post('voucher-approve')
+  @HttpCode(HttpStatus.OK)
+  handleVoucherApprove(@Body() data: HandleVoucherApprove) {
+    return this.procedure.handleVoucherApprove(data);
+  }
+
+  @Post('voucher-reject')
+  @HttpCode(HttpStatus.OK)
+  handleVoucherReject(@Body() data: HandleVoucherReject) {
+    return this.procedure.handleVoucherReject(data);
+  }
+
+  @Post('get-approval-history')
+  @HttpCode(HttpStatus.OK)
+  getApprovalHistory(@Body() data: GetApprovalHistory) {
+    return this.procedure.getApprovalHistory(data);
+  }
+
+  @Post('get-payement-disbursement')
+  @HttpCode(HttpStatus.OK)
+  getPaymentDisbursement(@Body() data: GetPaymentDisbursement) {
+    return this.procedure.getPaymentDisbursement(data);
   }
 }

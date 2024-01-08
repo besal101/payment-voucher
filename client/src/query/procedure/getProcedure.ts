@@ -1,6 +1,9 @@
+import { groupArray } from "@/lib/helpers";
 import http from "@/lib/http";
 import { API_ENDPOINTS } from "@/lib/settings";
 import {
+  APPROVALHISTORYRESPONSE,
+  APPROVERTRESPONSE,
   CashierResponse,
   CostCenterDepartmentResponse,
   CostCenterDivisionResponse,
@@ -13,6 +16,7 @@ import {
   ProductLineResponse,
   VATRESPONSE,
   VENDORLISTRESPONSE,
+  VTDATA,
   ViewRequestedResponse,
 } from "@/types/types";
 import { UseQueryResult, useQuery } from "@tanstack/react-query";
@@ -84,15 +88,15 @@ const useGetPaymentTypeQuery = (): UseQueryResult<
   });
 };
 
-const fetchVatPercent = async (): Promise<VATRESPONSE> => {
-  const { data } = await http.get(API_ENDPOINTS.VAT);
+const fetchVatCode = async (): Promise<VATRESPONSE> => {
+  const { data } = await http.get(API_ENDPOINTS.VATCODE);
   return data;
 };
 
-const useGetVatPercentQuery = (): UseQueryResult<VATRESPONSE, Error> => {
+const useGetVatCodeQuery = (): UseQueryResult<VATRESPONSE, Error> => {
   return useQuery<VATRESPONSE, Error>({
     queryKey: [QUERYKEYS.GETALLVATPERCENT],
-    queryFn: () => fetchVatPercent(),
+    queryFn: () => fetchVatCode(),
   });
 };
 
@@ -182,22 +186,134 @@ const useGetProductLineQuery = (): UseQueryResult<
   });
 };
 
-const fetchAllRequestedVoucher = async (
-  userId: string
-): Promise<ViewRequestedResponse> => {
+const fetchAllRequestedVoucher = async (userId: string): Promise<VTDATA[]> => {
   const { data } = await http.get(
     `${API_ENDPOINTS.GETREQUESTEDVOUCHERS}?userId=${userId}`
   );
-
-  return data;
+  const response = groupArray(data.result);
+  return response;
 };
 
 const useGetRequestedVoucherQuery = (
   userId: string
-): UseQueryResult<ViewRequestedResponse, Error> => {
-  return useQuery<ViewRequestedResponse, Error>({
+): UseQueryResult<VTDATA[], Error> => {
+  return useQuery<VTDATA[], Error>({
     queryKey: [QUERYKEYS.GETREQUESTEDVOUCHERS, userId],
     queryFn: () => fetchAllRequestedVoucher(userId),
+  });
+};
+
+const fetchSingleVoucher = async (
+  userId: string,
+  reqno: string
+): Promise<ViewRequestedResponse> => {
+  const body = {
+    userId,
+    reqno,
+  };
+  const { data } = await http.post(`${API_ENDPOINTS.GETSINGLEVOUCHERS}`, body);
+  return data;
+};
+
+const useGetSingleVoucherQuery = (
+  userId: string,
+  reqno: string
+): UseQueryResult<ViewRequestedResponse, Error> => {
+  return useQuery<ViewRequestedResponse, Error>({
+    queryKey: [QUERYKEYS.GETSINGLEVOUCHERS, userId, reqno],
+    queryFn: () => fetchSingleVoucher(userId, reqno),
+  });
+};
+
+const fetchApprover = async (
+  userId: string,
+  doctype: string,
+  requester: string
+): Promise<APPROVERTRESPONSE> => {
+  const body = {
+    userId,
+    doctype,
+    requserid: requester,
+  };
+  const { data } = await http.post(`${API_ENDPOINTS.GETAPPROVER}`, body);
+  return data;
+};
+
+const useGetApproverQuery = (
+  userId: string,
+  doctype: string,
+  requester: string
+): UseQueryResult<APPROVERTRESPONSE, Error> => {
+  return useQuery<APPROVERTRESPONSE, Error>({
+    queryKey: [QUERYKEYS.GETAPPROVER, userId, doctype, requester],
+    queryFn: () => fetchApprover(userId, doctype, requester),
+  });
+};
+
+const fetchNextApprover = async (
+  userId: string,
+  doctype: string,
+  approverstage: number
+): Promise<APPROVERTRESPONSE> => {
+  const body = {
+    userId,
+    doctype,
+    approverstage,
+  };
+  const { data } = await http.post(`${API_ENDPOINTS.GETNEXTAPPROVER}`, body);
+  return data;
+};
+
+const useNextApproverQuery = (
+  userId: string,
+  doctype: string,
+  approverstage: number
+): UseQueryResult<APPROVERTRESPONSE, Error> => {
+  return useQuery<APPROVERTRESPONSE, Error>({
+    queryKey: [QUERYKEYS.GETNEXTAPPROVER, userId, doctype, approverstage],
+    queryFn: () => fetchNextApprover(userId, doctype, approverstage),
+  });
+};
+
+const fetchApprovalHistory = async (
+  reqno: string
+): Promise<APPROVALHISTORYRESPONSE> => {
+  const body = {
+    reqno,
+  };
+  const { data } = await http.post(`${API_ENDPOINTS.GETAPPROVALHISTORY}`, body);
+  return data;
+};
+
+const useGetApprovalHistory = (
+  cashierId: string
+): UseQueryResult<APPROVALHISTORYRESPONSE, Error> => {
+  return useQuery<APPROVALHISTORYRESPONSE, Error>({
+    queryKey: [QUERYKEYS.GETAPPROVALHISTORY, cashierId],
+    queryFn: () => fetchApprovalHistory(cashierId),
+  });
+};
+
+const fetchPaymentDisbursement = async (
+  cashierId: string
+): Promise<VTDATA[]> => {
+  const body = {
+    cashierId,
+  };
+  const { data } = await http.post(
+    `${API_ENDPOINTS.GETPAYMENTDISBURSEMENT}`,
+    body
+  );
+  const response = groupArray(data.result);
+  return response;
+};
+
+const useGetPaymentDisbursement = (
+  cashierId: string
+): UseQueryResult<VTDATA[], Error> => {
+  return useQuery<VTDATA[], Error>({
+    queryKey: [QUERYKEYS.GETAPPROVALHISTORY, cashierId],
+    queryFn: () => fetchPaymentDisbursement(cashierId),
   });
 };
 
@@ -213,6 +329,11 @@ export {
   useGetPaymentTypeQuery,
   useGetProductLineQuery,
   useGetRequestedVoucherQuery,
-  useGetVatPercentQuery,
+  useGetSingleVoucherQuery,
+  useGetVatCodeQuery,
   useGetVendorListQuery,
+  useGetApproverQuery,
+  useNextApproverQuery,
+  useGetApprovalHistory,
+  useGetPaymentDisbursement,
 };

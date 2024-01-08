@@ -9,7 +9,7 @@ export const API_ENDPOINTS = {
   PAYMENTMETHOD: "/procedure/payment-method",
   APINVOICE: "/procedure/ap-invoice",
   PAYMENTYPE: "/procedure/payment-type",
-  VAT: "/procedure/vat",
+  VATCODE: "/procedure/vat",
   CURRENCY: "/procedure/currency",
   EMPLOYEE: "/procedure/employee",
   COSTCENTERDEPARTMENT: "/procedure/cost-center-department",
@@ -18,6 +18,16 @@ export const API_ENDPOINTS = {
   PRODUCTLINE: "/procedure/product-line",
   CREATEPAYMENTVOUCHER: "/procedure/create-voucher",
   GETREQUESTEDVOUCHERS: "/procedure/get-voucher",
+  VALIDATECHECKAPPROVER: "/procedure/check-approver",
+  GETREQUESTERINFO: "/procedure/requester-info",
+  GETSINGLEVOUCHERS: "/procedure/get-single-voucher",
+  GETAPPROVER: "/procedure/get-approver",
+  GETNEXTAPPROVER: "/procedure/get-next-level-approver",
+  HANDLEVOUCHERAPPROVE: "/procedure/voucher-approve",
+  HANDLEVOUCHERREJECT: "/procedure/voucher-reject",
+  GETAPPROVALHISTORY: "/procedure/get-approval-history",
+  GETPAYMENTDISBURSEMENT: "/procedure/get-payement-disbursement",
+  GETVATPERCENT: "/procedure/get-vat-percent",
 };
 
 export const PAYMENT_MODE: TPAYMENTMODE[] = [

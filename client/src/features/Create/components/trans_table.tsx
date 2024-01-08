@@ -20,9 +20,12 @@ const TransactionTable = () => {
 
   const addNewField = () => {
     append({
-      division: "",
-      department: "",
-      product_line: "",
+      division_code: "",
+      division_name: "",
+      department_code: "",
+      department_name: "",
+      product_line_code: "",
+      product_line_name: "",
       gl_code: "",
       gl_name: "",
       description: "",
