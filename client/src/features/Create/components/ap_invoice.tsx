@@ -89,7 +89,7 @@ const Apinvoice = () => {
               </SelectContent>
             ) : (
               <SelectContent>
-                <SelectItem value="null">No Ap Invoice</SelectItem>
+                <SelectItem value="0">No Ap Invoice</SelectItem>
               </SelectContent>
             )}
           </Select>

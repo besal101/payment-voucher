@@ -13,10 +13,16 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { APPROVALHISTORY, ViewRequestedT } from "@/types/types";
+import {
+  APPROVALHISTORY,
+  APPROVALHISTORYRESPONSE,
+  ViewRequestedResponse,
+  ViewRequestedT,
+} from "@/types/types";
 import {
   calculateNetAmount,
   calculateTotalAmountfromALl,
+  calculateVatAmount,
   countFiles,
   formatNumberWithCommas,
   getCurrencyName,
@@ -25,6 +31,9 @@ import {
 import { ToWords } from "to-words";
 import { format, parseISO } from "date-fns";
 import { Button } from "@/components/ui/button";
+import { Printer } from "lucide-react";
+import useInvoiceModal from "@/hooks/useInvoiceModal";
+import useSignatureModal from "@/hooks/useSignatureModal";
 
 const ViewCashierVoucher = () => {
   const [searchParams] = useSearchParams();
@@ -33,6 +42,9 @@ const ViewCashierVoucher = () => {
   const created_by = searchParams.get("created_by") || "";
   const cashierId = searchParams.get("cashierId") || "";
   const { data, isLoading } = useGetSingleVoucherQuery(created_by, reqno);
+
+  const openModal = useInvoiceModal((state) => state.openModal);
+  const { openModal: openSignature, setCashier } = useSignatureModal();
 
   const { data: history } = useGetApprovalHistory(reqno);
 
@@ -62,6 +74,22 @@ const ViewCashierVoucher = () => {
 
   const handleClose = () => {
     navigate(`/payment-disbursement?cashierId=${cashierId}`);
+  };
+
+  const handlePrint = () => {
+    openModal(
+      data as ViewRequestedResponse,
+      history as APPROVALHISTORYRESPONSE
+    );
+  };
+
+  const handlePay = () => {
+    const cashierData = {
+      CashierUserID: data?.result[0].REQCASHIERCODE as string,
+      CashierUsername: data?.result[0].REQCASHIERNAME as string,
+    };
+    setCashier(cashierData.CashierUserID, cashierData.CashierUsername);
+    openSignature();
   };
 
   return (
@@ -216,7 +244,13 @@ const ViewCashierVoucher = () => {
               <span className="text-xs font-normal">Net Amount</span>
             </div>
             <div className="border-l-[1px] border-t-[1px] border-slate-400 h-6 flex justify-center items-center">
-              <span className="text-xs font-normal">VAT</span>
+              <span className="text-xs font-normal">
+                {" "}
+                VAT{" "}
+                <span className="font-semibold">
+                  ({data?.result[0].REQVATPERC} %)
+                </span>
+              </span>
             </div>
             <div className="border-l-[1px] border-t-[1px] border-b-[1px] border-slate-400 h-6 flex justify-center items-center">
               <span className="text-xs font-normal">Total Amount</span>
@@ -228,7 +262,8 @@ const ViewCashierVoucher = () => {
               {calculateNetAmount(data?.result as ViewRequestedT[])}
             </div>
             <div className="border-l-[1px] border-t-[1px] border-slate-400 h-6 flex justify-center items-center">
-              {data?.result[0].REQVATPERC} %
+              {data?.result[0].REQCURRCODE}{" "}
+              {calculateVatAmount(data?.result as ViewRequestedT[])}
             </div>
             <div className="border-l-[1px] border-t-[1px] border-b-[1px] border-slate-400 h-6 flex justify-center items-center">
               {data?.result[0].REQCURRCODE}{" "}
@@ -259,7 +294,23 @@ const ViewCashierVoucher = () => {
             <span className="text-xs font-semibold flex justify-start items-center">
               Received by:
             </span>
-            <span className="text-xs mt-1 flex justify-start items-center"></span>
+            <div className="text-xs mt-1 flex justify-start items-center relative">
+              <span className="absolute top-0">
+                {data?.result[0].RECEIVEDBY}
+              </span>
+              <span className="absolute top-0">
+                {data?.result[0].PAIDSIGNDOC && (
+                  <img
+                    src={`${import.meta.env.VITE_PUBLIC_BACKEND}/uploads/${
+                      data?.result[0].PAIDSIGNDOC
+                    }`}
+                    height={70}
+                    width={100}
+                    className="mr-8"
+                  />
+                )}
+              </span>
+            </div>
           </div>
           <div className="flex flex-row justify-end">
             {countFiles(data?.result[0].REQATTACH as string) !== 0 && (
@@ -293,20 +344,30 @@ const ViewCashierVoucher = () => {
                   variant={"secondary"}
                   size={"sm"}
                   type="button"
+                  onClick={handlePay}
                 >
                   Pay
                 </Button>
-                <Button
-                  className="text-[11px]"
-                  variant={"default"}
-                  size={"sm"}
-                  type="button"
-                  onClick={handleClose}
-                >
-                  Close
-                </Button>
               </div>
             )}
+            <Button
+              className="text-[11px]"
+              variant={"default"}
+              size={"sm"}
+              type="button"
+              onClick={handleClose}
+            >
+              Close
+            </Button>
+            <Button
+              className="text-[11px] bg-[#f47c7c]"
+              size={"sm"}
+              type="button"
+              onClick={handlePrint}
+            >
+              <Printer size={18} className="mr-1" />
+              Print
+            </Button>
           </div>
           <div className="grid grid-cols-2">
             <div className="border-b-[1.3px] border-l-[1.3px] border-t-[1.3px] border-r-[1px] border-slate-400 h-6">
@@ -318,7 +379,7 @@ const ViewCashierVoucher = () => {
           <div className="grid grid-cols-6">
             <div className="border-b-[1.3px] border-l-[1.3px] border-slate-400 h-6">
               <span className="text-xs font-thin flex justify-center items-center mt-1">
-                Username
+                Approvers
               </span>
             </div>
             <div className="border-b-[1.3px] border-l-[1.3px] border-slate-400 h-6">
@@ -332,8 +393,8 @@ const ViewCashierVoucher = () => {
               </span>
             </div>
           </div>
-          {history?.result.map((item: APPROVALHISTORY) => (
-            <div className="grid grid-cols-6">
+          {history?.result.map((item: APPROVALHISTORY, index: number) => (
+            <div className="grid grid-cols-6" key={item.REQNO + index}>
               <div className="border-b-[1.3px] border-l-[1.3px] border-slate-400 h-5">
                 <span className="text-xs flex justify-center items-center mt-1">
                   {item.APPROVELUSERNAME}

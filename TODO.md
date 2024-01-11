@@ -1,8 +1,6 @@
 date in everything
 dd mm yy
 
-V no what is ?? remove
-
 log should be front of actions
 
 Add new voucher button
@@ -32,33 +30,18 @@ LOG from sap request By
 
 Product line sort
 
-Email
-Payment request from
-click the above button to view
-
-FIRST TIME APPROVAL STAGE IS 0
-CALL PP_10033
-
-second validate
-pp_10034
-
-CALL PP
-
-if there is next approval and approved
-app level next approval number
-
-if there are not next approval
-app_level 0
-
-if rej
-app lvel 0
-
-Payement change to bishal
-
-Pay button to cashier payment disbursement only when it is approved.
-
-Remark should be a some big
-
-remove dot from title.
-
 Approval history
+
+pay to >> Received by name & phone number along with signature
+
+place signatureimage with received by box along with name
+
+One prodedure for OTP validation
+One for uploading the signature doc and receivdby info
+
+paidstatus : P & C
+
+Reqstatus : Paid
+Paid Remarks :
+
+Designation

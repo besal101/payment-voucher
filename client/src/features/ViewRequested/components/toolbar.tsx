@@ -24,7 +24,9 @@ export function DataTableToolbar<TData>({
   const { state } = useUser();
 
   const handleNew = () => {
-    navigate(`/payment-request/create?uSrId=${state.USER_ID}`);
+    navigate(
+      `/payment-request/create?uSrId=${state.USER_ID}&LoTp=${state.OTP}`
+    );
   };
 
   return (

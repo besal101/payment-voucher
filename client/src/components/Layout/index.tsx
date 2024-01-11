@@ -2,6 +2,10 @@ import React from "react";
 import Sidebar from "./Sidebar";
 import Menu from "./Menu";
 import { useLocation } from "react-router-dom";
+import useInvoiceModal from "@/hooks/useInvoiceModal";
+import InvoiceModal from "@/features/ViewRequested/components/invoiceModal";
+import useSignatureModal from "@/hooks/useSignatureModal";
+import SignatureModal from "@/features/modal/SignatureModal";
 
 type Props = {
   children: React.ReactNode;
@@ -9,6 +13,8 @@ type Props = {
 
 const Layout = (props: Props) => {
   const location = useLocation();
+  const isOpen = useInvoiceModal((state) => state.isOpen);
+  const isSignatureOpen = useSignatureModal((state) => state.isOpen);
 
   return (
     <div className="h-full">
@@ -19,13 +25,15 @@ const Layout = (props: Props) => {
         <div className="2xl:container relative">
           <div className="h-36 bg-red-500 border-b border-gray-300/40 dark:border-gray-700">
             <div className="flex flex-row justify-between">
-              <span className="text-white font-semibold text-base font-poppins px-8 pt-4">
-                {location.pathname === "/received-request" &&
-                  "You have received the following requests to be approved"}
-                {location.pathname === "/create-payment" &&
-                  "Payment Request Voucher"}
-                {location.pathname === "/view-requested" &&
-                  "You have requested the followings payments to be approved"}
+              <span className="text-white font-semibold font-poppins text-sm px-9 pt-4">
+                {location.pathname === "/payment-request" && "Payment Requests"}
+                {location.pathname === "/payment-request/create" &&
+                  "Create New Payment Request"}
+                {location.pathname === "/payment-disbursement" &&
+                  "Payment Disbursement"}
+                {location.pathname === "/view-cashier-voucher" &&
+                  "View Voucher"}
+                {location.pathname === "/view-voucher" && "View Voucher"}
               </span>
               <Menu />
             </div>
@@ -38,6 +46,8 @@ const Layout = (props: Props) => {
             </div>
           </div>
         </div>
+        {isOpen && <InvoiceModal />}
+        {isSignatureOpen && <SignatureModal />}
       </main>
     </div>
   );

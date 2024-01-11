@@ -1,5 +1,6 @@
 import {
   ColumnDef,
+  SortingState,
   flexRender,
   getCoreRowModel,
   getFacetedRowModel,
@@ -23,6 +24,7 @@ import { DataTableToolbar } from "./components/toolbar";
 import { isWithinRange } from "@/lib/helpers";
 import { ViewRequestedT } from "@/types/types";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import React from "react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -33,6 +35,13 @@ export function PDDataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
+  const [sorting, setSorting] = React.useState<SortingState>([
+    {
+      id: "REQNO",
+      desc: true,
+    },
+  ]);
+
   const table = useReactTable({
     data,
     columns,
@@ -40,7 +49,11 @@ export function PDDataTable<TData, TValue>({
       fuzzy: isWithinRange,
     },
     getCoreRowModel: getCoreRowModel(),
+    onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
+    state: {
+      sorting,
+    },
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getFacetedRowModel: getFacetedRowModel(),

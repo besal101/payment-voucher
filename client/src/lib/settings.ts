@@ -28,6 +28,9 @@ export const API_ENDPOINTS = {
   GETAPPROVALHISTORY: "/procedure/get-approval-history",
   GETPAYMENTDISBURSEMENT: "/procedure/get-payement-disbursement",
   GETVATPERCENT: "/procedure/get-vat-percent",
+  VERIFYOTP: "/procedure/verify-otp",
+  GENERATEOTP: "/procedure/generate-otp",
+  CASHIERVOUCHERPAID: "/procedure/cashier-voucher-paid",
 };
 
 export const PAYMENT_MODE: TPAYMENTMODE[] = [

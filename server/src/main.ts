@@ -6,7 +6,14 @@ import * as express from 'express';
 import { join } from 'path';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, { cors: true });
+  const app = await NestFactory.create(AppModule);
+
+  // Enable CORS for all routes
+  app.enableCors({
+    origin: 'http://localhost:5173', // Add the origin(s) you want to allow
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true, // Enable credentials (cookies, authorization headers, etc.)
+  });
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -31,6 +38,6 @@ async function bootstrap() {
     customSiteTitle: 'API TESTING',
   });
 
-  await app.listen(5174);
+  await app.listen(3000);
 }
 bootstrap();

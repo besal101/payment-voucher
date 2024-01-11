@@ -5,6 +5,8 @@ import { CreateMailerDto, SuccessMailerDto } from 'src/mailer/dto/mailer.dto';
 import { MailerService } from 'src/mailer/mailer.service';
 import { CreatePaymentVoucherDto } from './dto/paymentVoucher.dto';
 import {
+  CashierVoucherPaidDTO,
+  GenerateOTP,
   GetApInvoice,
   GetApprovalHistory,
   GetApproverDto,
@@ -17,7 +19,9 @@ import {
   HandleVoucherReject,
   RequesterInfoDto,
   VerifyApproverExists,
+  VerifyOTP,
 } from './dto/requesterInfo.dto';
+import axios from 'axios';
 
 @Injectable()
 export class ProcedureService {
@@ -442,9 +446,7 @@ export class ProcedureService {
           name: approvers.result[0].USERNAME,
           navigateTo: `${this.config.get<string>(
             'FRONT_END',
-          )}/view-received-request?uSrId=${approvers.result[0].USERID}&reqno=${
-            data.reqno
-          }&requester=${data.requester}`,
+          )}/view-voucher?uSrId=${reqer.result[0].USER_ID}&reqno=${data.reqno}`,
           totalAmount: `${data.currency} ${data.totalAmount} `,
         };
         await this.testMail(mailer);
@@ -504,6 +506,85 @@ export class ProcedureService {
 
   async getPaymentDisbursement(data: GetPaymentDisbursement) {
     const sp_proc = `CALL PP_10038('${data.cashierId}')`;
+    try {
+      const result = await this.db.executeQuery(sp_proc);
+      return {
+        result,
+      };
+    } catch (error) {
+      console.error('Error executing SAP procedure:', error);
+      throw error;
+    }
+  }
+
+  async verifyOTP(data: VerifyOTP) {
+    try {
+      const response = await axios.get(
+        `http://20.74.247.50:83/SBOS.NEGT.ASKME.WCF.WcfNEGTASKME.svc/ValidateOTP?UserId=${data.userId}&OTP=${data.OTP}`,
+      );
+      const responseData = response.data;
+
+      return responseData;
+    } catch (error) {
+      console.error('Error in testotp:', error);
+      throw error;
+    }
+  }
+
+  async generateOTP(data: GenerateOTP) {
+    try {
+      const response = await axios.get(
+        `http://20.74.247.50:83/SBOS.NEGT.ASKME.WCF.WcfNEGTASKME.svc/GenerateOTP?RequestID=1&UserId=${data.userId}`,
+      );
+      const responseData = response.data;
+
+      return responseData;
+    } catch (error) {
+      console.error('Error in testotp:', error);
+      throw error;
+    }
+  }
+
+  async getAllApprovalScreen() {
+    const sp_proc = `CALL PP_10040()`;
+    try {
+      const result = await this.db.executeQuery(sp_proc);
+      return {
+        result,
+      };
+    } catch (error) {
+      console.error('Error executing SAP procedure:', error);
+      throw error;
+    }
+  }
+
+  async cashierVoucherPaid(data: CashierVoucherPaidDTO) {
+    const paramHeader = [
+      data.REQNUM,
+      data.PAIDSTATUS,
+      data.PAIDUSERID,
+      data.PAIDUSERNAME,
+      data.REQSTATUS,
+      data.PAIDREMARKS,
+      data.PAIDSIGNDOC,
+      data.RECEIVEDBY,
+      data.RECEIVERPHONE,
+      data.RECEIVERDESIG,
+    ];
+
+    const sp_proc = `CALL PP_50005(
+            ${paramHeader[0]},
+            '${paramHeader[1]}',
+            '${paramHeader[2]}',
+            '${paramHeader[3]}',
+            '${paramHeader[4]}',
+            '${paramHeader[5]}',
+            '${paramHeader[6]}',
+            '${paramHeader[7]}',
+            '${paramHeader[8]}',
+            '${paramHeader[9]}'
+          )`;
+
     try {
       const result = await this.db.executeQuery(sp_proc);
       return {

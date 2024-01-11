@@ -3,11 +3,23 @@ import { Button } from "@/components/ui/button";
 import { formatNumberWithCommas, isWithinRange } from "@/lib/helpers";
 import { VTDATA } from "@/types/types";
 import { ColumnDef } from "@tanstack/react-table";
+import { ArrowUpDown } from "lucide-react";
 
 export const columns: ColumnDef<VTDATA>[] = [
   {
     accessorKey: "REQNO",
-    header: "Req",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          className="text-xs"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Req no
+          <ArrowUpDown className="ml-2 h-3 w-3" />
+        </Button>
+      );
+    },
     filterFn: "includesString",
   },
   {
@@ -29,8 +41,8 @@ export const columns: ColumnDef<VTDATA>[] = [
     header: "Location",
   },
   {
-    accessorKey: "REQTYPENAME",
-    header: "Payment Type",
+    accessorKey: "REQMODENAME",
+    header: "Payment Mode",
   },
   {
     accessorKey: "REQCURRCODE",
@@ -84,8 +96,19 @@ export const columns: ColumnDef<VTDATA>[] = [
     },
   },
   {
-    accessorKey: "REQBPCODE",
-    header: "V no",
+    accessorKey: "Invoice",
+    header: "Receipt/Invoice",
+    cell: () => {
+      return (
+        <Button size={"xs"} variant={"secondary"} className="text-xs my-1">
+          Upload
+        </Button>
+      );
+    },
+  },
+  {
+    accessorKey: "SAP Vno",
+    header: "SAP Vno",
   },
   {
     accessorKey: "date",

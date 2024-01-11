@@ -82,7 +82,7 @@ const PurchaseOrderC = () => {
               </SelectContent>
             ) : (
               <SelectContent>
-                <SelectItem value="null">No Purchase order</SelectItem>
+                <SelectItem value="0">No Purchase order</SelectItem>
               </SelectContent>
             )}
           </Select>

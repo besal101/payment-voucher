@@ -19,6 +19,7 @@ import { APPROVALHISTORY, ViewRequestedT } from "@/types/types";
 import {
   calculateNetAmount,
   calculateTotalAmountfromALl,
+  calculateVatAmount,
   countFiles,
   formatNumberWithCommas,
   getCurrencyName,
@@ -63,6 +64,10 @@ const ViewReceivedRequest = () => {
   const [rejectRemark, setRejectRemark] = useState<string>("");
   const [rejectRemarkError, setRejectRemarkError] = useState<boolean>(false);
   const [rejectModal, setRejectModal] = useState<boolean>(false);
+  const [otpModal, setOTPModal] = useState<boolean>(true);
+
+  const [otp, setOTP] = useState("");
+  const [otpError, setOTPError] = useState<boolean>(false);
 
   const { data: history } = useGetApprovalHistory(reqno);
 
@@ -71,6 +76,40 @@ const ViewReceivedRequest = () => {
     "PAYREQ",
     requester
   );
+
+  const handleOTP = async () => {
+    if (otp === "") {
+      setOTPError(true);
+      return;
+    }
+    try {
+      const { data } = await http.post(`${API_ENDPOINTS.VERIFYOTP}`, {
+        userId: current_user,
+        OTP: otp,
+      });
+      if (data.ValidateOTPResult.Output === "Failed") {
+        setOTPError(true);
+        return;
+      }
+      setOTPModal(false);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        await http.post(`${API_ENDPOINTS.GENERATEOTP}`, {
+          userId: current_user,
+        });
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, [current_user]);
 
   useEffect(() => {
     if ((data?.result.length as number) === 0) {
@@ -411,7 +450,12 @@ const ViewReceivedRequest = () => {
                 <span className="text-xs font-normal">Net Amount</span>
               </div>
               <div className="border-l-[1px] border-t-[1px] border-slate-400 h-6 flex justify-center items-center">
-                <span className="text-xs font-normal">VAT</span>
+                <span className="text-xs font-normal">
+                  VAT{" "}
+                  <span className="font-semibold">
+                    ({data?.result[0].REQVATPERC} %)
+                  </span>
+                </span>
               </div>
               <div className="border-l-[1px] border-t-[1px] border-b-[1px] border-slate-400 h-6 flex justify-center items-center">
                 <span className="text-xs font-normal">Total Amount</span>
@@ -423,7 +467,8 @@ const ViewReceivedRequest = () => {
                 {calculateNetAmount(data?.result as ViewRequestedT[])}
               </div>
               <div className="border-l-[1px] border-t-[1px] border-slate-400 h-6 flex justify-center items-center">
-                {data?.result[0].REQVATPERC} %
+                {data?.result[0].REQCURRCODE}{" "}
+                {calculateVatAmount(data?.result as ViewRequestedT[])}
               </div>
               <div className="border-l-[1px] border-t-[1px] border-b-[1px] border-slate-400 h-6 flex justify-center items-center">
                 {data?.result[0].REQCURRCODE}{" "}
@@ -512,7 +557,7 @@ const ViewReceivedRequest = () => {
             <div className="grid grid-cols-6">
               <div className="border-b-[1.3px] border-l-[1.3px] border-slate-400 h-6">
                 <span className="text-xs font-thin flex justify-center items-center mt-1">
-                  Username
+                  Approvers
                 </span>
               </div>
               <div className="border-b-[1.3px] border-l-[1.3px] border-slate-400 h-6">
@@ -596,6 +641,48 @@ const ViewReceivedRequest = () => {
                   Submit
                 </Button>
               </div>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={otpModal} onOpenChange={() => {}}>
+        <DialogContent
+          className="max-w-xl"
+          onInteractOutside={(e) => {
+            e.preventDefault();
+          }}
+        >
+          <div className="flex flex-col gap-2">
+            <label htmlFor="reject" className="text-xs">
+              Please verify your login.
+            </label>
+            <Input
+              id="reject"
+              type="text"
+              placeholder="Enter OTP"
+              className="col-span-2"
+              value={otp}
+              onChange={(e) => {
+                setOTPError(false);
+                setOTP(e.target.value);
+              }}
+            />
+            {otpError && (
+              <span className="text-[12px] text-red-400">
+                This OTP is Invalid.
+              </span>
+            )}
+
+            <div className="flex flex-row justify-end mt-4">
+              <Button
+                className="text-xs"
+                size={"sm"}
+                variant={"secondary"}
+                onClick={handleOTP}
+              >
+                Submit
+              </Button>
             </div>
           </div>
         </DialogContent>

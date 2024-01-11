@@ -14,6 +14,7 @@ import { useUser } from "@/context/UserContext";
 import {
   calculateNetAmount,
   calculateTotalAmountfromALl,
+  calculateVatAmount,
   countFiles,
   formatNumberWithCommas,
   getCurrencyName,
@@ -26,12 +27,13 @@ import {
 import { APPROVALHISTORY, ViewRequestedT } from "@/types/types";
 import { Tooltip, TooltipTrigger } from "@radix-ui/react-tooltip";
 import { format, parseISO } from "date-fns";
-import { MonitorDown } from "lucide-react";
-import { useSearchParams } from "react-router-dom";
+import { X, MonitorDown } from "lucide-react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { ToWords } from "to-words";
 
 const ViewSingleVoucher = () => {
   const { state } = useUser();
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const reqno = searchParams.get("reqno") || "";
   const { data, isLoading } = useGetSingleVoucherQuery(state.USER_ID, reqno);
@@ -62,10 +64,14 @@ const ViewSingleVoucher = () => {
     },
   });
 
+  const handleClose = () => {
+    navigate(`/payment-request?uSrId=${state.USER_ID}&LoTp=${state.OTP}`);
+  };
+
   return (
-    <div className="flex justify-center mt-6 mb-10">
+    <div className="flex justify-center mt-3 mb-10">
       <div>
-        <div className="grid grid-cols-5 gap-52">
+        <div className="grid grid-cols-5 gap-52 mt-4">
           <div className="col-span-2">
             <div className="flex flex-col text-xs font-light">
               <img src={logo} className="w-40" alt="" />
@@ -249,19 +255,25 @@ const ViewSingleVoucher = () => {
               <span className="text-xs font-normal">Net Amount</span>
             </div>
             <div className="border-l-[1px] border-t-[1px] border-slate-400 h-6 flex justify-center items-center">
-              <span className="text-xs font-normal">VAT</span>
+              <span className="text-xs font-normal">
+                VAT{" "}
+                <span className="font-semibold">
+                  ({data?.result[0].REQVATPERC} %)
+                </span>
+              </span>
             </div>
             <div className="border-l-[1px] border-t-[1px] border-b-[1px] border-slate-400 h-6 flex justify-center items-center">
               <span className="text-xs font-normal">Total Amount</span>
             </div>
           </div>
-          <div className="w-28 border-slate-400 text-sm">
+          <div className="w-28 border-slate-400 text-xs">
             <div className="border-l-[1px] border-slate-400 h-6 flex justify-center items-center">
               {data?.result[0].REQCURRCODE}{" "}
               {calculateNetAmount(data?.result as ViewRequestedT[])}
             </div>
             <div className="border-l-[1px] border-t-[1px] border-slate-400 h-6 flex justify-center items-center">
-              {data?.result[0].REQVATPERC} %
+              {data?.result[0].REQCURRCODE}{" "}
+              {calculateVatAmount(data?.result as ViewRequestedT[])}
             </div>
             <div className="border-l-[1px] border-t-[1px] border-b-[1px] border-slate-400 h-6 flex justify-center items-center">
               {data?.result[0].REQCURRCODE}{" "}
@@ -329,7 +341,7 @@ const ViewSingleVoucher = () => {
         <div className="grid grid-cols-6">
           <div className="border-b-[1.3px] border-l-[1.3px] border-slate-400 h-6">
             <span className="text-xs font-thin flex justify-center items-center mt-1">
-              Username
+              Approvers
             </span>
           </div>
           <div className="border-b-[1.3px] border-l-[1.3px] border-slate-400 h-6">
@@ -370,6 +382,22 @@ const ViewSingleVoucher = () => {
             </div>
           </div>
         ))}
+        <div className="fixed bottom-5 left-20 right-7 h-14 shadow-lg bg-slate-300 rounded-sm">
+          <div className="flex flex-row justify-end items-center">
+            <div className="flex justify-between gap-3 mt-3 mr-4">
+              <Button
+                className="shadow-md "
+                variant={"default"}
+                size={"sm"}
+                type="button"
+                onClick={handleClose}
+              >
+                <X size="18" className="mr-1" />
+                Close
+              </Button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -1,5 +1,6 @@
 import {
   ColumnDef,
+  SortingState,
   flexRender,
   getCoreRowModel,
   getFacetedRowModel,
@@ -24,6 +25,7 @@ import { isWithinRange } from "@/lib/helpers";
 import { ViewRequestedT } from "@/types/types";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "@/context/UserContext";
+import React from "react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -34,6 +36,12 @@ export function DataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
+  const [sorting, setSorting] = React.useState<SortingState>([
+    {
+      id: "REQNO",
+      desc: true,
+    },
+  ]);
   const table = useReactTable({
     data,
     columns,
@@ -41,7 +49,11 @@ export function DataTable<TData, TValue>({
       fuzzy: isWithinRange,
     },
     getCoreRowModel: getCoreRowModel(),
+    onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
+    state: {
+      sorting,
+    },
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getFacetedRowModel: getFacetedRowModel(),
@@ -52,7 +64,9 @@ export function DataTable<TData, TValue>({
   const { state } = useUser();
 
   const handleCell = (value: ViewRequestedT) => {
-    navigate(`/view-voucher?uSrId=${state.USER_ID}&reqno=${value.REQNO}`);
+    navigate(
+      `/view-voucher?uSrId=${state.USER_ID}&reqno=${value.REQNO}&LoTp=${state.OTP}`
+    );
   };
 
   return (

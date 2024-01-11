@@ -9,6 +9,8 @@ import {
 } from '@nestjs/common';
 import { CreatePaymentVoucherDto } from './dto/paymentVoucher.dto';
 import {
+  CashierVoucherPaidDTO,
+  GenerateOTP,
   GetApInvoice,
   GetApprovalHistory,
   GetApproverDto,
@@ -21,6 +23,7 @@ import {
   HandleVoucherReject,
   RequesterInfoDto,
   VerifyApproverExists,
+  VerifyOTP,
 } from './dto/requesterInfo.dto';
 import { ProcedureService } from './procedure.service';
 
@@ -208,5 +211,29 @@ export class ProcedureController {
   @HttpCode(HttpStatus.OK)
   getPaymentDisbursement(@Body() data: GetPaymentDisbursement) {
     return this.procedure.getPaymentDisbursement(data);
+  }
+
+  @Post('verify-otp')
+  @HttpCode(HttpStatus.OK)
+  verifyOTP(@Body() data: VerifyOTP) {
+    return this.procedure.verifyOTP(data);
+  }
+
+  @Post('generate-otp')
+  @HttpCode(HttpStatus.OK)
+  generateOTP(@Body() data: GenerateOTP) {
+    return this.procedure.generateOTP(data);
+  }
+
+  @Post('cashier-voucher-paid')
+  @HttpCode(HttpStatus.OK)
+  cashierVoucherPaid(@Body() data: CashierVoucherPaidDTO) {
+    return this.procedure.cashierVoucherPaid(data);
+  }
+
+  @Get('approval-screen')
+  @HttpCode(HttpStatus.OK)
+  getAllApprovalScreen() {
+    return this.procedure.getAllApprovalScreen();
   }
 }

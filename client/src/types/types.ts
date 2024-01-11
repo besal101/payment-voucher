@@ -121,6 +121,7 @@ export type ViewRequestedT = {
   REQUSERLOG: string;
   RESTATUS: string;
   REQREMARKS: string;
+  TOTALAMT: number;
   REQATTACH: string;
   "REQNO:2": number;
   CC_DEPT: string;
@@ -134,9 +135,11 @@ export type ViewRequestedT = {
   REQDESC: string;
   REQAMOUNT: number;
   APPROVEDUSERNAME: string;
+  PAIDSIGNDOC: string;
   "REQREMARKS:2": string;
   REQACTIVE: string;
   "REQATTACH:2": string;
+  RECEIVEDBY: string;
 };
 
 export type ViewRequestedResponse = {
@@ -155,6 +158,7 @@ export type VTDATA = {
   REQBPCODE: string;
   REQUSERID: string;
   REQUSERNAME: string;
+  REQMODENAME: string;
 };
 
 export type APPROVERT = {

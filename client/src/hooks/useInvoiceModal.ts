@@ -1,18 +1,27 @@
 // useDropModal.ts
 import { create } from "zustand";
 
+import { APPROVALHISTORYRESPONSE, ViewRequestedResponse } from "@/types/types";
+
 type InvoiceModalStore = {
   isOpen: boolean;
-  invoiceNumber: number | null;
-  openModal: (invoiceNumber: number) => void;
+  trans: ViewRequestedResponse | undefined;
+  history: APPROVALHISTORYRESPONSE | undefined;
+  openModal: (
+    trans: ViewRequestedResponse,
+    history: APPROVALHISTORYRESPONSE
+  ) => void;
   closeModal: () => void;
 };
 
 const useInvoiceModal = create<InvoiceModalStore>((set) => ({
   isOpen: false,
-  invoiceNumber: null,
-  openModal: (invoiceNumber) => set({ isOpen: true, invoiceNumber }),
-  closeModal: () => set({ isOpen: false, invoiceNumber: null }),
+  trans: undefined,
+  history: undefined,
+  openModal: (trans: ViewRequestedResponse, history: APPROVALHISTORYRESPONSE) =>
+    set({ isOpen: true, trans, history }),
+  closeModal: () =>
+    set({ isOpen: false, trans: undefined, history: undefined }),
 }));
 
 export default useInvoiceModal;

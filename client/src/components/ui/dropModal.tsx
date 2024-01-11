@@ -60,8 +60,8 @@ const DropModal = () => {
       } else {
         toast({
           variant: "destructive",
-          title: "Uh oh! Something went wrong.",
-          description: "File size too large",
+          title: "Uh oh! File size too large",
+          description: "Please compress the file and upload",
         });
       }
     } catch (error) {

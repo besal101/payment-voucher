@@ -77,6 +77,7 @@ const groupArray = (arr: ViewRequestedT[]) => {
         REQBPCODE,
         REQUSERID,
         REQUSERNAME,
+        REQMODENAME,
       } = obj;
       const key = REQNO;
 
@@ -93,6 +94,7 @@ const groupArray = (arr: ViewRequestedT[]) => {
           REQAMOUNT,
           REQBPCODE,
           REQUSERNAME,
+          REQMODENAME,
         };
       } else {
         acc[key].REQAMOUNT += REQAMOUNT;
@@ -113,6 +115,13 @@ const calculateTotalAmount = (obj: VTDATA): string => {
 const calculateNetAmount = (arr: ViewRequestedT[]): string => {
   const netamount = arr.reduce((sum, arr) => sum + arr.REQAMOUNT, 0);
   return formatNumberWithCommas(netamount);
+};
+
+const calculateVatAmount = (arr: ViewRequestedT[]): string => {
+  const netamount = arr.reduce((sum, arr) => sum + arr.REQAMOUNT, 0);
+  const vatPercentage = parseFloat(arr[0].REQVATPERC);
+  const vatAmount = (vatPercentage / 100) * netamount;
+  return formatNumberWithCommas(vatAmount);
 };
 
 const calculateTotalAmountfromALl = (arr: ViewRequestedT[]): number => {
@@ -137,7 +146,7 @@ const isWithinRange = (
   const dateStr = row?.original.REQDATE as string;
   const [start, end] = value;
 
-  const date = new Date(`${dateStr}T00:00:00`);
+  const date = new Date(`${dateStr}T00:00:00Z`); // Set time zone to UTC
 
   const startUTC = start ? new Date(`${start}T00:00:00Z`) : null;
   const endUTC = end ? new Date(`${end}T23:59:59Z`) : null;
@@ -155,6 +164,9 @@ const isWithinRange = (
 };
 
 const countFiles = (jsonString: string): number => {
+  if (jsonString === "" || jsonString === "undefined") {
+    return 0;
+  }
   try {
     const filenames: string[] = JSON.parse(jsonString);
     return filenames.length;
@@ -191,4 +203,5 @@ export {
   isWithinRange,
   countFiles,
   handleDownload,
+  calculateVatAmount,
 };

@@ -21,7 +21,7 @@ export default function AppRouter() {
   return (
     <Suspense fallback={<PageLoader />}>
       <Routes>
-        <Route path="*" element={<InvalidLogin />} />
+        <Route path="*" element={<Error />} />
         <Route path="login" element={<InvalidLogin />} />
         <Route path="error" element={<Error />} />
         <Route path="no-setup" element={<SetupNotFound />} />

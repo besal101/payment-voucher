@@ -1,17 +1,17 @@
-import { Navigate } from "react-router";
 import { Outlet, useSearchParams } from "react-router-dom";
-import Layout from "../Layout";
 import { useUser } from "@/context/UserContext";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import http from "@/lib/http";
 import { API_ENDPOINTS } from "@/lib/settings";
-import { useNavigate } from "react-router-dom";
+import { PageLoader } from "../Shared";
 
 export default function SemiRoute() {
   const [searchParams] = useSearchParams();
   const userId = searchParams.get("uSrId") || "";
+
   const { dispatch } = useUser();
-  const navigate = useNavigate();
+
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -26,21 +26,13 @@ export default function SemiRoute() {
             APPROVALS: 0,
           },
         });
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
-
     fetchData();
-  }, [dispatch, navigate, userId]);
+  }, [dispatch, userId]);
 
-  if (userId) {
-    return (
-      <Layout>
-        <Outlet />
-      </Layout>
-    );
-  } else {
-    return <Navigate to={"/login"} />;
-  }
+  return loading ? <PageLoader /> : <Outlet />;
 }

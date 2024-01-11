@@ -219,3 +219,74 @@ export class GetVatPercent {
   @IsString()
   vatCode: string;
 }
+
+export class VerifyOTP {
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  userId: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  OTP: string;
+}
+
+export class GenerateOTP {
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  userId: string;
+}
+
+export class CashierVoucherPaidDTO {
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  REQNUM: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  PAIDSTATUS: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  PAIDUSERID: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  PAIDUSERNAME: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  REQSTATUS: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsOptional()
+  PAIDREMARKS: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsOptional()
+  PAIDSIGNDOC: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  RECEIVEDBY: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsOptional()
+  RECEIVERPHONE: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsOptional()
+  RECEIVERDESIG: string;
+}

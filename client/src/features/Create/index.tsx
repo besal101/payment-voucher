@@ -32,8 +32,7 @@ import { useNavigate } from "react-router-dom";
 import { useUser } from "@/context/UserContext";
 
 const CreateVC = () => {
-  const { handleSubmit, reset, control, formState } =
-    useFormContext<PaymentFormType>();
+  const { handleSubmit, reset, control } = useFormContext<PaymentFormType>();
   const navigate = useNavigate();
 
   const { state } = useUser();
@@ -47,8 +46,6 @@ const CreateVC = () => {
   const handleButtonClick = (modalKey: string) => {
     openModal(modalKey);
   };
-
-  console.log(formState.errors);
 
   const payReceiver = useWatch({
     control,
@@ -66,7 +63,7 @@ const CreateVC = () => {
     },
     onSuccess: () => {
       reset();
-      navigate(`/payment-request?uSrId=${state.USER_ID}`);
+      navigate(`/payment-request?uSrId=${state.USER_ID}&LoTp=${state.OTP}`);
       toast({
         title: "Success !!",
         description:
@@ -83,7 +80,7 @@ const CreateVC = () => {
   });
 
   const handleClose = () => {
-    navigate(`/payment-request?uSrId=${state.USER_ID}`);
+    navigate(`/payment-request?uSrId=${state.USER_ID}&LoTp=${state.OTP}`);
   };
 
   function onSubmit(data: PaymentFormType) {

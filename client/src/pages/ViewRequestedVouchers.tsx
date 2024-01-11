@@ -8,7 +8,6 @@ import { useUser } from "@/context/UserContext";
 const ViewRequestedVouchers = () => {
   const { state } = useUser();
   const { data, isLoading } = useGetRequestedVoucherQuery(state.USER_ID);
-  console.log(data);
 
   return (
     <div className="px-4 py-4 mt-6">

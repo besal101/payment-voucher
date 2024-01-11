@@ -9,7 +9,7 @@ type Props = {
 
 const Sidebar: React.FC<Props> = ({ active }: Props) => {
   const { state } = useUser();
-  const { USER_ID } = state;
+  const { USER_ID, OTP } = state;
 
   return (
     <div className="min-h-screen bg-gray-100 shadow-xl">
@@ -22,9 +22,11 @@ const Sidebar: React.FC<Props> = ({ active }: Props) => {
             <ul className="mt-6 tracking-wide">
               <li className="min-w-max">
                 <Link
-                  to={`/payment-request?uSrId=${USER_ID}`}
+                  to={`/payment-request?uSrId=${USER_ID}&LoTp=${OTP}`}
                   className={`${
-                    active === "/payment-request"
+                    active === "/payment-request" ||
+                    active === "/payment-request/create" ||
+                    active === "/view-voucher"
                       ? "relative flex items-center space-x-4 bg-gradient-to-r from-rose-500 to-orange-600 px-4 py-3 text-white hover:bg-gray-200"
                       : "bg group flex items-center space-x-4 px-4 py-3 text-gray-600 hover:bg-slate-100"
                   }`}
@@ -37,9 +39,10 @@ const Sidebar: React.FC<Props> = ({ active }: Props) => {
               </li>
               <li className="min-w-max">
                 <Link
-                  to={`/payment-disbursement?cashierId=451`}
+                  to={`/payment-disbursement?cashierId=451&LoTp=${OTP}`}
                   className={`${
-                    active === "/payment-disbursement"
+                    active === "/payment-disbursement" ||
+                    active === "/view-cashier-voucher"
                       ? "relative flex items-center space-x-4 bg-gradient-to-r from-rose-500 to-orange-600 px-4 py-3 text-white hover:bg-gray-200"
                       : "bg group flex items-center space-x-4 px-4 py-3 text-gray-600 hover:bg-slate-100"
                   }`}

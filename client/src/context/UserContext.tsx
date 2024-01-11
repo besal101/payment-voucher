@@ -7,6 +7,7 @@ export type UserState = {
   APPROVALS: number;
   USER_EMAIL: string;
   USER_MOBILE1: string;
+  OTP?: string;
 };
 
 type UserAction = { type: "SET_USER"; payload: UserState };
@@ -32,6 +33,7 @@ const userReducer = (state: UserState, action: UserAction): UserState => {
         APPROVALS: action.payload.APPROVALS,
         USER_EMAIL: action.payload.USER_EMAIL,
         USER_MOBILE1: action.payload.USER_MOBILE1,
+        OTP: action.payload.OTP,
       };
     default:
       return state;
@@ -45,6 +47,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     APPROVALS: 0,
     USER_EMAIL: "",
     USER_MOBILE1: "",
+    OTP: "",
   });
 
   return (
