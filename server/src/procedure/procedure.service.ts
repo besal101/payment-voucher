@@ -5,6 +5,7 @@ import { CreateMailerDto, SuccessMailerDto } from 'src/mailer/dto/mailer.dto';
 import { MailerService } from 'src/mailer/mailer.service';
 import { CreatePaymentVoucherDto } from './dto/paymentVoucher.dto';
 import {
+  CancelPaymentVoucher,
   CashierVoucherPaidDTO,
   GenerateOTP,
   GetApInvoice,
@@ -19,6 +20,7 @@ import {
   HandleVoucherReject,
   RequesterInfoDto,
   VerifyApproverExists,
+  VerifyCashier,
   VerifyOTP,
 } from './dto/requesterInfo.dto';
 import axios from 'axios';
@@ -225,10 +227,6 @@ export class ProcedureService {
 
     paramHeader.push("'" + 0 + "'");
     paramHeader.push("'" + user_log + "'");
-    paramHeader.push("'" + data.cashier_code + "'");
-    paramHeader.push("'" + data.cashier_name + "'");
-    paramHeader.push("'" + data.location_code + "'");
-    paramHeader.push("'" + data.location_name + "'");
     paramHeader.push("'" + data.payment_method_code + "'");
     paramHeader.push("'" + data.payment_method_name + "'");
     paramHeader.push("'" + data.payment_type_code + "'");
@@ -296,8 +294,8 @@ export class ProcedureService {
 
       const mailer: CreateMailerDto = {
         createdBy: data.username,
-        email: 'Bishal@neweast.co',
-        // email: approvers.result[0].USEREMAIL,
+        // email: 'Bishal@neweast.co',
+        email: approvers.result[0].USEREMAIL,
         name: approvers.result[0].USERNAME,
         navigateTo: `${this.config.get<string>(
           'FRONT_END',
@@ -319,6 +317,32 @@ export class ProcedureService {
 
   async getPaymentVoucher(userId: string) {
     const sp_proc = `CALL PP_10031('${userId}')`;
+    try {
+      const result = await this.db.executeQuery(sp_proc);
+      return {
+        result,
+      };
+    } catch (error) {
+      console.error('Error executing SAP procedure:', error);
+      throw error;
+    }
+  }
+
+  async getApprovals(userId: string) {
+    const sp_proc = `CALL PP_10040('${userId}')`;
+    try {
+      const result = await this.db.executeQuery(sp_proc);
+      return {
+        result,
+      };
+    } catch (error) {
+      console.error('Error executing SAP procedure:', error);
+      throw error;
+    }
+  }
+
+  async verifyCashier(data: VerifyCashier) {
+    const sp_proc = `CALL PP_10041('${data.userId}')`;
     try {
       const result = await this.db.executeQuery(sp_proc);
       return {
@@ -429,8 +453,8 @@ export class ProcedureService {
 
       if (approvers?.result.length === 0) {
         const mailer: SuccessMailerDto = {
-          email: 'Bishal@neweast.co',
-          // email: approvers.result[0].USEREMAIL,
+          // email: 'Bishal@neweast.co',
+          email: reqer.result[0].USEREMAIL,
           name: reqer.result[0].EMP_FULLNAME,
           navigateTo: `${this.config.get<string>(
             'FRONT_END',
@@ -441,12 +465,14 @@ export class ProcedureService {
       } else {
         const mailer: CreateMailerDto = {
           createdBy: reqer.result[0].EMP_FULLNAME,
-          email: 'Bishal@neweast.co',
-          // email: approvers.result[0].USEREMAIL,
+          // email: 'Bishal@neweast.co',
+          email: approvers.result[0].USEREMAIL,
           name: approvers.result[0].USERNAME,
           navigateTo: `${this.config.get<string>(
             'FRONT_END',
-          )}/view-voucher?uSrId=${reqer.result[0].USER_ID}&reqno=${data.reqno}`,
+          )}/view-received-request?uSrId=${approvers.result[0].USERID}&reqno=${
+            data.reqno
+          }&requester=${data.requester}`,
           totalAmount: `${data.currency} ${data.totalAmount} `,
         };
         await this.testMail(mailer);
@@ -472,8 +498,8 @@ export class ProcedureService {
       const reqer = await this.getRequesterInfo(d);
 
       const mailer: SuccessMailerDto = {
-        email: 'Bishal@neweast.co',
-        // email: approvers.result[0].USEREMAIL,
+        // email: 'Bishal@neweast.co',
+        email: reqer.result[0].USEREMAIL,
         name: reqer.result[0].EMP_FULLNAME,
         navigateTo: `${this.config.get<string>(
           'FRONT_END',
@@ -585,6 +611,31 @@ export class ProcedureService {
             '${paramHeader[9]}'
           )`;
 
+    try {
+      const result = await this.db.executeQuery(sp_proc);
+      return {
+        result,
+      };
+    } catch (error) {
+      console.error('Error executing SAP procedure:', error);
+      throw error;
+    }
+  }
+
+  async cancelPaymentVoucher(data: CancelPaymentVoucher) {
+    const d = new Date();
+
+    const user_log = `${data.userid} cancelled on ${d.getFullYear()}-${
+      d.getMonth() + 1
+    }-${d.getDate()}`;
+
+    const paramHeader = [data.reqno, data.cancelled, user_log];
+
+    const sp_proc = `CALL PP_50006(
+            ${paramHeader[0]},
+            '${paramHeader[1]}',
+            '${paramHeader[2]}'
+          )`;
     try {
       const result = await this.db.executeQuery(sp_proc);
       return {

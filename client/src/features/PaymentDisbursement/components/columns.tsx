@@ -37,16 +37,8 @@ export const columns: ColumnDef<VTDATA>[] = [
     filterFn: isWithinRange,
   },
   {
-    accessorKey: "REQLOCNAME",
-    header: "Location",
-  },
-  {
     accessorKey: "REQMODENAME",
     header: "Payment Mode",
-  },
-  {
-    accessorKey: "REQCURRCODE",
-    header: "Currency",
   },
   {
     accessorKey: "REQAMOUNT",
@@ -58,6 +50,11 @@ export const columns: ColumnDef<VTDATA>[] = [
       return formatNumberWithCommas(totalAmount);
     },
   },
+  {
+    accessorKey: "REQCURRCODE",
+    header: "Currency",
+  },
+
   {
     accessorKey: "actions",
     header: "Actions",
@@ -71,7 +68,7 @@ export const columns: ColumnDef<VTDATA>[] = [
   },
   {
     accessorKey: "REQUSERNAME",
-    header: "Created By",
+    header: "Requested By",
   },
   {
     accessorKey: "RESTATUS",

@@ -41,7 +41,7 @@ const TransactionTable = () => {
   return (
     <>
       <Table className="border-[1px] border-slate-300">
-        <TableHeader>
+        <TableHeader className="bg-gray-300">
           <TableRow>
             <TableHead className="border-[1px] border-slate-300 text-gray-900 text-[11px] font-semibold">
               Division
@@ -53,7 +53,7 @@ const TransactionTable = () => {
               Product Line
             </TableHead>
             <TableHead className="border-[1px] border-slate-300 text-gray-900 text-[11px] font-semibold">
-              GL Name
+              Expense Type
             </TableHead>
             <TableHead className="border-[1px] border-slate-300 text-gray-900 text-[11px] font-semibold">
               Description
@@ -62,6 +62,9 @@ const TransactionTable = () => {
               Amount
             </TableHead>
             <TableHead className="border-[1px] border-slate-300 text-gray-900 text-[11px] font-semibold">
+              Attachment
+            </TableHead>
+            <TableHead className="border-[1px] border-slate-300 text-gray-900 text-[11px] font-semibold w-12">
               Action.
             </TableHead>
           </TableRow>

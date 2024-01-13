@@ -17,7 +17,7 @@ const PayToOtherC = () => {
       render={({ field }) => (
         <FormItem>
           <FormLabel htmlFor="pay_to_others" className="mr-8">
-            Write receiver name
+            Received by
           </FormLabel>
           <FormControl>
             <Input id="pay_to_others" className="col-span-2" {...field} />

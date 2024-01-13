@@ -4,6 +4,7 @@ import { API_ENDPOINTS } from "@/lib/settings";
 import {
   APPROVALHISTORYRESPONSE,
   APPROVERTRESPONSE,
+  CASHIERRESPONSE,
   CashierResponse,
   CostCenterDepartmentResponse,
   CostCenterDivisionResponse,
@@ -203,6 +204,25 @@ const useGetRequestedVoucherQuery = (
   });
 };
 
+const fetchAllRequestedApprovals = async (
+  userId: string
+): Promise<VTDATA[]> => {
+  const { data } = await http.get(
+    `${API_ENDPOINTS.GETREQUESTEDAPPROVALS}?userId=${userId}`
+  );
+  const response = groupArray(data.result);
+  return response;
+};
+
+const useGetRequestedApprovalsQuery = (
+  userId: string
+): UseQueryResult<VTDATA[], Error> => {
+  return useQuery<VTDATA[], Error>({
+    queryKey: [QUERYKEYS.GETREQUESTEDAPPROVALS, userId],
+    queryFn: () => fetchAllRequestedApprovals(userId),
+  });
+};
+
 const fetchSingleVoucher = async (
   userId: string,
   reqno: string
@@ -312,8 +332,27 @@ const useGetPaymentDisbursement = (
   cashierId: string
 ): UseQueryResult<VTDATA[], Error> => {
   return useQuery<VTDATA[], Error>({
-    queryKey: [QUERYKEYS.GETAPPROVALHISTORY, cashierId],
+    queryKey: [QUERYKEYS.GETPAYMENTDISBURSEMENT, cashierId],
     queryFn: () => fetchPaymentDisbursement(cashierId),
+  });
+};
+
+const fetchVerifyCashier = async (
+  cashierId: string
+): Promise<CASHIERRESPONSE> => {
+  const body = {
+    userId: cashierId,
+  };
+  const { data } = await http.post(`${API_ENDPOINTS.VERIFYCASHIER}`, body);
+  return data;
+};
+
+const useVerifyCashier = (
+  cashierId: string
+): UseQueryResult<CASHIERRESPONSE, Error> => {
+  return useQuery<CASHIERRESPONSE, Error>({
+    queryKey: [QUERYKEYS.VERIFYCASHIER, cashierId],
+    queryFn: () => fetchVerifyCashier(cashierId),
   });
 };
 
@@ -336,4 +375,6 @@ export {
   useNextApproverQuery,
   useGetApprovalHistory,
   useGetPaymentDisbursement,
+  useGetRequestedApprovalsQuery,
+  useVerifyCashier,
 };

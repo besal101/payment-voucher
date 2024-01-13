@@ -5,7 +5,7 @@ import { PaymentFormSchema } from "@/lib/schemas";
 import { FORM_DEFAULT_VALUES } from "@/lib/variables";
 import CreateVC from "@/features/Create";
 
-const Createvoucher = () => {
+const CreateRequest = () => {
   const form = useForm<PaymentFormType>({
     resolver: zodResolver(PaymentFormSchema),
     defaultValues: FORM_DEFAULT_VALUES,
@@ -20,4 +20,4 @@ const Createvoucher = () => {
   );
 };
 
-export default Createvoucher;
+export default CreateRequest;

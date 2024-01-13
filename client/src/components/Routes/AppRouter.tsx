@@ -5,17 +5,17 @@ import ProtectedRoute from "./ProtectedRoute";
 import SetupNotFound from "@/pages/SetupNotFound";
 import SemiRoute from "./SemiRoute";
 import Layout from "../Layout";
-const CreateVoucher = lazy(() => import("@/pages/CreateVoucher"));
-const ViewRequestedVouchers = lazy(
-  () => import("@/pages/ViewRequestedVouchers")
-);
-const InvalidLogin = lazy(() => import("@/pages/login"));
-const Error = lazy(() => import("@/pages/Error"));
+import ViewApprovalRequests from "@/pages/ViewApprovalRequests";
+import FinancePosting from "@/pages/FinancePosting";
+const CreateVoucher = lazy(() => import("@/pages/create-payment-request"));
+const PaymentRequest = lazy(() => import("@/pages/payment-request"));
+const InvalidLogin = lazy(() => import("@/pages/login-page"));
+const Error = lazy(() => import("@/pages/error-page"));
 const ViewSingleVoucher = lazy(() => import("@/pages/ViewSingleVoucher"));
 const ViewReceivedRequest = lazy(() => import("@/pages/ViewReceivedRequest"));
 const PaymentDisbursement = lazy(() => import("@/pages/PaymentDisbursement"));
 const CashierVoucher = lazy(() => import("@/pages/ViewCashierVoucher"));
-const ApprovedPage = lazy(() => import("@/pages/ApprovedPage"));
+const ApprovedPage = lazy(() => import("@/pages/approved-page"));
 
 export default function AppRouter() {
   return (
@@ -32,6 +32,28 @@ export default function AppRouter() {
             element={<ViewReceivedRequest />}
           />
         </Route>
+        <Route element={<SemiRoute />}>
+          <Route
+            path="view-approval-requests"
+            element={
+              <Layout>
+                <ViewApprovalRequests />
+              </Layout>
+            }
+          />
+        </Route>
+
+        <Route element={<SemiRoute />}>
+          <Route
+            path="finance-posting"
+            element={
+              <Layout>
+                <FinancePosting />
+              </Layout>
+            }
+          />
+        </Route>
+
         <Route
           path="payment-disbursement"
           element={
@@ -49,7 +71,7 @@ export default function AppRouter() {
           }
         />
         <Route element={<ProtectedRoute />}>
-          <Route path="payment-request" element={<ViewRequestedVouchers />} />
+          <Route path="payment-request" element={<PaymentRequest />} />
           <Route path="payment-request/create" element={<CreateVoucher />} />
           <Route path="view-voucher" element={<ViewSingleVoucher />} />
         </Route>

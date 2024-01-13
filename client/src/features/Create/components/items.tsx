@@ -215,7 +215,7 @@ const SingleItem = ({ name, index, fields, removeField }: SingleItemProps) => {
                     <SelectContent>
                       {GLCode?.result.map((item: GLCODE, index: number) => (
                         <SelectItem value={item.ACCODE} key={index}>
-                          {item.ACCNAME} - {item.ACCODE}
+                          {item.ACCNAME}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -226,7 +226,7 @@ const SingleItem = ({ name, index, fields, removeField }: SingleItemProps) => {
             )}
           />
         </TableCell>
-        <TableCell className="border-[1.3px] border-slate-300 px-1 py-1">
+        <TableCell className="border-[1.3px] border-slate-300">
           <FormField
             control={control}
             name={`${name}[${index}].description`}
@@ -236,7 +236,7 @@ const SingleItem = ({ name, index, fields, removeField }: SingleItemProps) => {
                   <Textarea
                     id={`${name}[${index}].description`}
                     {...field}
-                    className="h-10 text-[10px] px-1 py-1"
+                    className="text-[10px]"
                   />
                 </FormControl>
                 <FormMessage />
@@ -272,7 +272,7 @@ const SingleItem = ({ name, index, fields, removeField }: SingleItemProps) => {
             <Tooltip>
               <TooltipTrigger type="button" className="relative">
                 <FilePlus2
-                  size={20}
+                  size={17}
                   color="blue"
                   onClick={() => openModal(`${name}[${index}]`)}
                   className="cursor-pointer"
@@ -293,22 +293,23 @@ const SingleItem = ({ name, index, fields, removeField }: SingleItemProps) => {
                 )}
               </TooltipContent>
             </Tooltip>
-
-            {fields.length > 1 && (
-              <Tooltip>
-                <TooltipTrigger type="button">
-                  <Trash2
-                    color="red"
-                    size={20}
-                    onClick={() => removeField(index)}
-                  />
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Remove item</p>
-                </TooltipContent>
-              </Tooltip>
-            )}
           </div>
+        </TableCell>
+        <TableCell className="border-[1.3px] border-slate-300 w-12">
+          {fields.length > 1 && (
+            <Tooltip>
+              <TooltipTrigger type="button">
+                <Trash2
+                  color="red"
+                  size={20}
+                  onClick={() => removeField(index)}
+                />
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Remove item</p>
+              </TooltipContent>
+            </Tooltip>
+          )}
         </TableCell>
       </TableRow>
     </>

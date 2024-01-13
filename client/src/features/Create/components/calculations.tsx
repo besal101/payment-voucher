@@ -1,9 +1,12 @@
 import { Separator } from "@/components/ui/separator";
 import { PaymentFormType } from "@/types/types";
+import { useEffect, useState } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 
 const Calculations = () => {
   const { control, setValue } = useFormContext<PaymentFormType>();
+  const [totalNet, setTotalNet] = useState(0);
+  const [totalAmount, setTotalAmount] = useState(0);
 
   const totals = useWatch({
     control,
@@ -23,10 +26,14 @@ const Calculations = () => {
     defaultValue: 0,
   });
 
-  // Calculate the sum of the "total" values
-  const totalnet = totals.reduce((sum, item) => sum + item.total, 0);
-  const total = totalnet + (totalnet * vatPercent) / 100;
-  setValue("total_amount", total);
+  useEffect(() => {
+    const totalnet = totals.reduce((sum, item) => sum + item.total, 0);
+    setTotalNet(totalnet);
+    const total = totalnet + (totalnet * vatPercent) / 100;
+    setTotalAmount(total);
+
+    setValue("total_amount", total);
+  }, [setValue, totals, vatPercent]);
 
   return (
     <div className="flex flex-col ml-5 font-poppins">
@@ -34,7 +41,7 @@ const Calculations = () => {
         <span>Amount before VAT</span>
         <span>:</span>
         <span>
-          {currency} {totalnet !== 0 && currency} {totalnet}
+          {currency} {totalNet !== 0 && currency} {totalNet}
         </span>
       </div>
       <Separator className="my-0.5 bg-gray-900 h-[1px]" />
@@ -49,7 +56,7 @@ const Calculations = () => {
         <span>:</span>
         <span>
           {" "}
-          {currency} {(totalnet * vatPercent) / 100}
+          {currency} {(totalNet * vatPercent) / 100}
         </span>
       </div>
       <Separator className="my-0.5 bg-gray-900 h-[1px]" />
@@ -57,7 +64,7 @@ const Calculations = () => {
         <span>Total</span>
         <span>:</span>
         <span>
-          {currency} {total}
+          {currency} {totalAmount}
         </span>
       </div>
       <Separator className="my-0.5 bg-gray-900 h-[1px]" />

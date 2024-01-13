@@ -11,19 +11,19 @@ import { useFormContext } from "react-hook-form";
 const Date = () => {
   const { control } = useFormContext();
   return (
-    <div className="flex flex-row gap-3">
+    <div className="flex flex-row mt-2.5">
       <FormField
         control={control}
         name="date"
         render={({ field }) => (
-          <FormItem className="flex flex-row whitespace-nowrap items-center">
+          <FormItem className="flex flex-col whitespace-nowrap">
             <FormLabel htmlFor="date">Date :</FormLabel>
-            <FormControl className="ml-2">
+            <FormControl>
               <Input
                 id="date"
                 disabled
                 type="text"
-                className="col-span-2 text-[10px] disabled:text-black disabled:bg-white"
+                className=" mt-1 text-[10px] disabled:text-black disabled:bg-white"
                 value={field.value}
                 tabIndex={1}
               />

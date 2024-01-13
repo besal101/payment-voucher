@@ -7,10 +7,6 @@ const options: Intl.DateTimeFormatOptions = {
 
 export const FORM_DEFAULT_VALUES = {
   date: d.toLocaleDateString("en-US", options),
-  cashier_code: "",
-  cashier_name: "",
-  location_code: "",
-  location_name: "",
   payment_method_code: "",
   payment_method_name: "",
   payment_type_code: "",
@@ -62,5 +58,13 @@ export const statuses = [
   {
     value: "Rejected",
     label: "Rejected",
+  },
+  {
+    value: "Paid",
+    label: "Paid",
+  },
+  {
+    value: "Cancelled",
+    label: "Cancelled",
   },
 ];

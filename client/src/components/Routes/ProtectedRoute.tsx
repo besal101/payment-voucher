@@ -11,13 +11,15 @@ export default function ProtectedRoute() {
   const [searchParams] = useSearchParams();
   const userId = searchParams.get("uSrId") || "";
   const LoTp = searchParams.get("LoTp") || "";
+
   const path = useLocation();
   const { dispatch } = useUser();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!LoTp) {
-      navigate(`login`);
+    if (!LoTp || isNaN(Number(LoTp))) {
+      navigate(`/login${path.search}&redirectTo=${path.pathname}`);
+      return;
     }
 
     const verifyOTP = async () => {
@@ -27,7 +29,7 @@ export default function ProtectedRoute() {
           OTP: LoTp,
         });
         if (data.ValidateOTPResult.Output === "Failed") {
-          navigate(`login${path.search}&redirectTo=${path.pathname}`);
+          navigate(`/login${path.search}&redirectTo=${path.pathname}`);
         }
       } catch (error) {
         console.error("Error fetching data:", error);

@@ -33,11 +33,11 @@ class ItemDto {
   @IsString()
   department_name: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   product_line_code: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   product_line_name: string;
 
@@ -49,7 +49,7 @@ class ItemDto {
   @IsString()
   gl_name: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   description: string;
 
@@ -71,22 +71,6 @@ class ItemDto {
 export class CreatePaymentVoucherDto {
   @IsNotEmpty()
   date: Date;
-
-  @IsNotEmpty()
-  @IsString()
-  cashier_code: string;
-
-  @IsNotEmpty()
-  @IsString()
-  cashier_name: string;
-
-  @IsNotEmpty()
-  @IsString()
-  location_code: string;
-
-  @IsNotEmpty()
-  @IsString()
-  location_name: string;
 
   @IsNotEmpty()
   @IsString()

@@ -23,7 +23,7 @@ const PayTo = () => {
       render={({ field }) => (
         <FormItem>
           <FormLabel htmlFor="pay_to" className="mr-8">
-            Pay To
+            Disburse To
           </FormLabel>
           <Select onValueChange={field.onChange} defaultValue={field.value}>
             <FormControl>

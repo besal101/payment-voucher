@@ -290,3 +290,27 @@ export class CashierVoucherPaidDTO {
   @IsOptional()
   RECEIVERDESIG: string;
 }
+
+export class CancelPaymentVoucher {
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  reqno: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  cancelled: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  userid: string;
+}
+
+export class VerifyCashier {
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  userId: string;
+}

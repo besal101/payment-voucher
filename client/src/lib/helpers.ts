@@ -2,8 +2,11 @@ import {
   Payload,
   PaymentFormType,
   VTDATA,
+  ViewRequestedResponse,
   ViewRequestedT,
 } from "@/types/types";
+
+import { ToWords } from "to-words";
 
 /**
  * Formats a number with commas and decimal places
@@ -78,6 +81,7 @@ const groupArray = (arr: ViewRequestedT[]) => {
         REQUSERID,
         REQUSERNAME,
         REQMODENAME,
+        TOTALAMT,
       } = obj;
       const key = REQNO;
 
@@ -95,6 +99,7 @@ const groupArray = (arr: ViewRequestedT[]) => {
           REQBPCODE,
           REQUSERNAME,
           REQMODENAME,
+          TOTALAMT,
         };
       } else {
         acc[key].REQAMOUNT += REQAMOUNT;
@@ -191,6 +196,33 @@ const handleDownload = (jsonString: string) => {
   }
 };
 
+const numberToWords = (currency: string, data: ViewRequestedResponse) => {
+  const toWords = new ToWords({
+    localeCode: "en-AE",
+    converterOptions: {
+      currency: true,
+      ignoreDecimal: false,
+      ignoreZeroCurrency: false,
+      doNotAddOnly: false,
+      currencyOptions: {
+        name: getCurrencyName(currency),
+        plural: getCurrencyName(currency),
+        symbol: currency,
+        fractionalUnit: {
+          name: "cents",
+          plural: "cents",
+          symbol: "",
+        },
+      },
+    },
+  });
+
+  const totalAmount = calculateTotalAmountfromALl(
+    data?.result as ViewRequestedT[]
+  );
+  return toWords.convert(totalAmount);
+};
+
 export {
   formatNumberWithCommas,
   mergeItemsAttachments,
@@ -204,4 +236,5 @@ export {
   countFiles,
   handleDownload,
   calculateVatAmount,
+  numberToWords,
 };

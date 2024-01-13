@@ -14,7 +14,6 @@ const InvalidLogin = () => {
   const userId = searchParams.get("uSrId") || "";
   const reqno = searchParams.get("reqno") || "";
   const redirectTo = searchParams.get("redirectTo") || "";
-  const requester = searchParams.get("requester") || "";
   const [userID, setUserID] = useState<string>(userId);
   const [otpInput, setOTPInput] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
@@ -50,10 +49,8 @@ const InvalidLogin = () => {
       setLoading(false);
       return;
     }
-    const navroute = redirectTo === "" ? "payment-request" : redirectTo;
-    navigate(
-      `/${navroute}?uSrId=${userID}&LoTp=${generateOTP}&reqno=${reqno}&requester=${requester}`
-    );
+    const navroute = redirectTo === "" ? "/payment-request" : `${redirectTo}`;
+    navigate(`${navroute}?uSrId=${userId}&LoTp=${generateOTP}&reqno=${reqno}`);
   };
 
   return (

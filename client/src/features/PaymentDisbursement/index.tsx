@@ -63,11 +63,11 @@ export function PDDataTable<TData, TValue>({
   const navigate = useNavigate();
 
   const [searchParams] = useSearchParams();
-  const cashierId = searchParams.get("cashierId") || "";
+  const uSrId = searchParams.get("uSrId") || "";
 
   const handleCell = (value: ViewRequestedT) => {
     navigate(
-      `/view-cashier-voucher?cashierId=${cashierId}&created_by=${value.REQUSERID}&reqno=${value.REQNO}`
+      `/view-cashier-voucher?uSrId=${uSrId}&created_by=${value.REQUSERID}&reqno=${value.REQNO}`
     );
   };
 

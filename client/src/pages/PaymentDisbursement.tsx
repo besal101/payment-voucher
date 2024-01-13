@@ -6,8 +6,8 @@ import BeatLoader from "react-spinners/BeatLoader";
 
 const PaymentDisbursement = () => {
   const [searchParams] = useSearchParams();
-  const cashierId = searchParams.get("cashierId") || "";
-  const { data, isLoading } = useGetPaymentDisbursement(cashierId);
+  const uSrId = searchParams.get("uSrId") || "";
+  const { data, isLoading } = useGetPaymentDisbursement(uSrId);
 
   return (
     <div className="px-4 py-4 mt-6">

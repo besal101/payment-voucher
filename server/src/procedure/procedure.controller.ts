@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common';
 import { CreatePaymentVoucherDto } from './dto/paymentVoucher.dto';
 import {
+  CancelPaymentVoucher,
   CashierVoucherPaidDTO,
   GenerateOTP,
   GetApInvoice,
@@ -23,6 +24,7 @@ import {
   HandleVoucherReject,
   RequesterInfoDto,
   VerifyApproverExists,
+  VerifyCashier,
   VerifyOTP,
 } from './dto/requesterInfo.dto';
 import { ProcedureService } from './procedure.service';
@@ -231,9 +233,27 @@ export class ProcedureController {
     return this.procedure.cashierVoucherPaid(data);
   }
 
+  @Post('cancel-payment-request')
+  @HttpCode(HttpStatus.OK)
+  cancelPaymentVoucher(@Body() data: CancelPaymentVoucher) {
+    return this.procedure.cancelPaymentVoucher(data);
+  }
+
   @Get('approval-screen')
   @HttpCode(HttpStatus.OK)
   getAllApprovalScreen() {
     return this.procedure.getAllApprovalScreen();
+  }
+
+  @Get('get-approvals')
+  @HttpCode(HttpStatus.OK)
+  getApprovals(@Query('userId') userId: string) {
+    return this.procedure.getApprovals(userId);
+  }
+
+  @Post('verify-cashier')
+  @HttpCode(HttpStatus.OK)
+  verifyCashier(@Body() data: VerifyCashier) {
+    return this.procedure.verifyCashier(data);
   }
 }

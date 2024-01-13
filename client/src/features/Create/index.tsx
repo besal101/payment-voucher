@@ -9,10 +9,10 @@ import { PaymentFormType } from "@/types/types";
 import { useMutation } from "@tanstack/react-query";
 import { useFormContext, useWatch } from "react-hook-form";
 import { useSearchParams } from "react-router-dom";
-import CashierC from "@/features/Create/components/cashier";
+// import CashierC from "@/features/Create/components/cashier";
 import Date from "@/features/Create/components/date";
 import VendorC from "@/features/Create/components/vendor";
-import LocationC from "@/features/Create/components/location";
+// import LocationC from "@/features/Create/components/location";
 import PurchaseOrderC from "@/features/Create/components/purchaseOrder";
 import PaymentMethodC from "@/features/Create/components/paymentMethod";
 import Apinvoice from "@/features/Create/components/ap_invoice";
@@ -96,36 +96,32 @@ const CreateVC = () => {
   }
 
   return (
-    <div className="mt-0.5 mb-16 px-4">
+    <div className="mt-1.5 mb-16 px-4">
       <Form {...useFormContext<PaymentFormType>()}>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
-          <div className="flex flex-row justify-end">
-            <Date />
-          </div>
-          <div className="grid grid-cols-6 gap-2">
-            <div className="flex flex-col">
-              <CashierC />
-              <VendorC />
-            </div>
-            <div className="flex flex-col">
-              <LocationC />
-              <PurchaseOrderC />
-            </div>
-            <div className="flex flex-col">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          <div className="grid grid-cols-6 gap-2 bg-slate-100 px-2 pb-3 rounded-md">
+            <div className="flex flex-col gap-1">
+              <Date />
               <PaymentMethodC />
-              <Apinvoice />
             </div>
-            <div className="flex flex-col">
-              <PaymenttypeC />
+            <div className="flex flex-col gap-1">
+              <PaymentModeC />
               <VatC />
             </div>
-            <div className="flex flex-col">
-              <PaymentModeC />
+            <div className="flex flex-col gap-1">
+              <PaymenttypeC />
               <PayTo />
             </div>
-            <div className="flex flex-col">
-              <CurrencyC />
+            <div className="flex flex-col gap-1">
+              <VendorC />
               {payReceiver === "employee" ? <EmployeeC /> : <PayToOtherC />}
+            </div>
+            <div className="flex flex-col gap-1">
+              <PurchaseOrderC />
+              <CurrencyC />
+            </div>
+            <div className="flex flex-col gap-1">
+              <Apinvoice />
             </div>
           </div>
           <div
@@ -137,7 +133,7 @@ const CreateVC = () => {
           >
             <div className="flex flex-col rounded-xl">
               <TransactionTable />
-              <div className="flex flex-row justify-start mt-2 ">
+              <div className="flex flex-row justify-start">
                 <Button
                   variant={"secondary"}
                   type="button"
@@ -173,16 +169,16 @@ const CreateVC = () => {
             <div className="flex flex-row justify-end items-center">
               <div className="flex justify-between gap-3 mt-3 mr-4">
                 <Button
-                  className="shadow-md"
+                  className="rounded-sm h-8"
                   variant={"default"}
-                  size={"sm"}
+                  size={"xs"}
                   type="submit"
                   disabled={isPending}
                 >
                   Submit
                 </Button>
                 <Button
-                  className="shadow-md"
+                  className="rounded-sm h-8"
                   variant={"secondary"}
                   size={"sm"}
                   type="button"
@@ -192,7 +188,7 @@ const CreateVC = () => {
                   Reset
                 </Button>
                 <Button
-                  className="shadow-md bg-purple-800"
+                  className="rounded-sm h-8 bg-purple-800"
                   variant={"default"}
                   size={"sm"}
                   type="button"

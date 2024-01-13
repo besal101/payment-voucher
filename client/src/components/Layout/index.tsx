@@ -28,7 +28,7 @@ const Layout = (props: Props) => {
               <span className="text-white font-semibold font-poppins text-sm px-9 pt-4">
                 {location.pathname === "/payment-request" && "Payment Requests"}
                 {location.pathname === "/payment-request/create" &&
-                  "Create New Payment Request"}
+                  "Payment Request"}
                 {location.pathname === "/payment-disbursement" &&
                   "Payment Disbursement"}
                 {location.pathname === "/view-cashier-voucher" &&

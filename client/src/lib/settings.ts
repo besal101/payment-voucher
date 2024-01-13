@@ -18,6 +18,7 @@ export const API_ENDPOINTS = {
   PRODUCTLINE: "/procedure/product-line",
   CREATEPAYMENTVOUCHER: "/procedure/create-voucher",
   GETREQUESTEDVOUCHERS: "/procedure/get-voucher",
+  GETREQUESTEDAPPROVALS: "/procedure/get-approvals",
   VALIDATECHECKAPPROVER: "/procedure/check-approver",
   GETREQUESTERINFO: "/procedure/requester-info",
   GETSINGLEVOUCHERS: "/procedure/get-single-voucher",
@@ -31,6 +32,8 @@ export const API_ENDPOINTS = {
   VERIFYOTP: "/procedure/verify-otp",
   GENERATEOTP: "/procedure/generate-otp",
   CASHIERVOUCHERPAID: "/procedure/cashier-voucher-paid",
+  CANCELREQUEST: "/procedure/cancel-payment-request",
+  VERIFYCASHIER: "/procedure/verify-cashier",
 };
 
 export const PAYMENT_MODE: TPAYMENTMODE[] = [

@@ -140,6 +140,8 @@ export type ViewRequestedT = {
   REQACTIVE: string;
   "REQATTACH:2": string;
   RECEIVEDBY: string;
+  REQCANCELED: string;
+  PAIDEMPNAME: string;
 };
 
 export type ViewRequestedResponse = {
@@ -158,6 +160,7 @@ export type VTDATA = {
   REQBPCODE: string;
   REQUSERID: string;
   REQUSERNAME: string;
+  TOTALAMT?: number;
   REQMODENAME: string;
 };
 
@@ -175,6 +178,7 @@ export type APPROVERTRESPONSE = {
 
 export type APPROVALHISTORY = {
   REQNO: string;
+  APPROVERUSERID: string;
   APPROVELUSERNAME: string;
   APPROVERSTAGE: string;
   APPROVERSTATUS: string;
@@ -184,4 +188,14 @@ export type APPROVALHISTORY = {
 
 export type APPROVALHISTORYRESPONSE = {
   result: APPROVALHISTORY[];
+};
+
+export type CASHIER = {
+  USER_ID: string;
+  USER_NAME: string;
+  USER_EMAIL: string;
+};
+
+export type CASHIERRESPONSE = {
+  result: CASHIER[];
 };
